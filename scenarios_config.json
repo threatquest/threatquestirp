@@ -1,0 +1,1896 @@
+
+[
+  {
+    "scenarioId": "OVERDRAFT_EMPORIUM_PHISHING",
+    "scenarioTitle": "The Overdraft Emporium",
+    "startPassageId": "Introduction",
+    "passages": [
+      {
+        "id": "Introduction",
+        "text": "<p>You are a SOC Analyst at The Overdraft Emporium. A mid-size regional financial institution known for its friendly service but relaxed approach to internal cybersecurity protocols.</p><p>The company values efficiency and dislikes “unnecessary interruptions.”</p>",
+        "choices": [
+          {
+            "text": "Continue",
+            "next": "Continue"
+          }
+        ]
+      },
+      {
+        "id": "Continue",
+        "text": "<p>At 9:36 AM, you receive an alert that a mass phishing campaign is targeting employees. The emails appear to come from the CFO, urging users to “change their passwords immediately” using a link provided.</p>",
+        "choices": [
+          {
+            "text": "Run AV scans on all network devices",
+            "next": "Run-AV-scans-on-all-network-devices",
+            "penalty": 10,
+            "mistake": "Running an AV scan is an investigation action, but quarantining the active threat is a higher priority containment step."
+          },
+          {
+            "text": "Quarantine the emails for investigation",
+            "next": "Quarantine-the-emails-for-investigation",
+            "penalty": 0
+          },
+          {
+            "text": "Personally investigate the link (Sandbox)",
+            "next": "Personally-investigate-the-link-Sand-box",
+            "penalty": 5,
+            "mistake": "Prioritized analysis over the containment of the active email threat."
+          }
+        ]
+      },
+      {
+        "id": "Run-AV-scans-on-all-network-devices",
+        "text": "<p>After running AV scans, you determine that all devices on the network are free of malware. What do you do next?</p>",
+        "choices": [
+          {
+            "text": "Close the incident as a false positive",
+            "next": "Close-the-incident-as-a-false-positive",
+            "penalty": 15,
+            "mistake": "Prematurely closing the incident without checking for credential compromise is a critical failure."
+          }
+        ]
+      },
+      {
+        "id": "Close-the-incident-as-a-false-positive",
+        "text": "<p>You decide to close the incident and flag it as a false positive. Later that day, however, multiple employees report being locked out after “resetting” their passwords using the phishing link.</p><p>You now realize that the link was a positive alert which you have now reported to the CISO.</p>",
+        "choices": [
+          {
+            "text": "View network logs",
+            "next": "View-network-logs",
+            "penalty": 5,
+            "mistake": "You are recovering, but you are late to check the logs."
+          },
+          {
+            "text": "Reset passwords to see if it was a system error",
+            "next": "reset-passwords-to-see-if-it-was-a-system-error",
+            "penalty": 10,
+            "mistake": "Resetting passwords without prior analysis is a poor investigative choice."
+          },
+          {
+            "text": "Analyze proxy traffic for clicks.",
+            "next": "Analyze-proxy-traffic-for-clicks",
+            "penalty": 5,
+            "mistake": "Necessary step, but you lost critical time closing the incident earlier."
+          }
+        ]
+      },
+      {
+        "id": "Quarantine-the-emails-for-investigation",
+        "text": "<p>You quickly quarantine all suspicious emails from employee inboxes and mark the incident as active. You prepare for deeper analysis.</p>",
+        "choices": [
+          {
+            "text": "Review SIEM and SSO logs.",
+            "next": "Review-SIEM-and-SSO-logs",
+            "penalty": -5
+          },
+          {
+            "text": "Analyze proxy traffic for clicks.",
+            "next": "Analyze-proxy-traffic-for-clicks",
+            "penalty": -5
+          },
+          {
+            "text": "Identify impacted accounts.",
+            "next": "Identify-impacted-accounts",
+            "penalty": -5
+          },
+          {
+            "text": "Investigate email contents",
+            "next": "Investigate-email-contents",
+            "penalty": -5
+          }
+        ]
+      },
+      {
+        "id": "Review-SIEM-and-SSO-logs",
+        "text": "<p>You review SSO logs and find the first logon from a new user. You query SIEM logs for user activity during this time.</p><p>During this review, you find that the user had downloaded a document and upon opening the document, it is discovered that the document contained sensitive customer data.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Dismiss this as a normal user",
+            "next": "Dismiss-this-as-a-normal-user",
+            "penalty": 20,
+            "mistake": "Dismissing a new user login during an active phishing campaign without verification is negligent."
+          },
+          {
+            "text": "Remove new user and block their IP",
+            "next": "Remove-new-user-and-block-their-IP",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Remove-new-user-and-block-their-IP",
+        "text": "<p>You removed the new user and blocked their IP all seems fine.</p><p>You think back to the original email sent from the CFO and wonder if there is any correlation. However, nothing immediately points to this.</p><p>What should you do?</p>",
+        "choices": [
+          {
+            "text": "Mark the incident as resolved",
+            "next": "Mark-the-incident-as-resolved",
+            "penalty": 30,
+            "mistake": "You stopped the immediate bleeding, but failed to investigate the root cause (the phishing link traffic)."
+          },
+          {
+            "text": "Analyze proxy traffic for clicks",
+            "next": "Analyze-proxy-traffic-for-clicks",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Dismiss-this-as-a-normal-user",
+        "text": "<p>You decide to dismiss the activity. Through this dismissal you failed to properly block the user who was in actuality, a threat actor that breached the system.</p><p>Your customer and employee data have been hacked.</p><div class=\"ascii-art\"><br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⡀⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠈⠄⠄⠄⠁⠄⠁⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⣀⣀⣤⣤⣴⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣦⣤⣤⣄⣀⡀⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⣴⣿⣿⡿⣿⢿⣟⣿⣻⣟⡿⣟⣿⣟⡿⣟⣿⣻⣟⣿⣻⢿⣻⡿⣿⢿⣷⣆⠄⠄⠄<br>⠄⠄⠄⢘⣿⢯⣷⡿⡿⡿⢿⢿⣷⣯⡿⣽⣞⣷⣻⢯⣷⣻⣾⡿⡿⢿⢿⢿⢯⣟⣞⡮⡀⠄⠄<br>⠄⠄⠄⢸⢞⠟⠃⣉⢉⠉⠉⠓⠫⢿⣿⣷⢷⣻⣞⣿⣾⡟⠽⠚⠊⠉⠉⠉⠙⠻⣞⢵⠂⠄⠄<br>⠄⠄⠄⢜⢯⣺⢿⣻⣿⣿⣷⣔⡄⠄⠈⠛⣿⣿⡾⠋⠁⠄⠄⣄⣶⣾⣿⡿⣿⡳⡌⡗⡅⠄⠄<br>⠄⠄⠄⢽⢱⢳⢹⡪⡞⠮⠯⢯⡻⡬⡐⢨⢿⣿⣿⢀⠐⡥⣻⡻⠯⡳⢳⢹⢜⢜⢜⢎⠆⠄⠄<br>⠄⠄⠠⣻⢌⠘⠌⡂⠈⠁⠉⠁⠘⠑⢧⣕⣿⣿⣿⢤⡪⠚⠂⠈⠁⠁⠁⠂⡑⠡⡈⢮⠅⠄⠄<br>⠄⠄⠠⣳⣿⣿⣽⣭⣶⣶⣶⣶⣶⣺⣟⣾⣻⣿⣯⢯⢿⣳⣶⣶⣶⣖⣶⣮⣭⣷⣽⣗⠍⠄⠄<br>⠄⠄⢀⢻⡿⡿⣟⣿⣻⣽⣟⣿⢯⣟⣞⡷⣿⣿⣯⢿⢽⢯⣿⣻⣟⣿⣻⣟⣿⣻⢿⣿⢀⠄⠄<br>⠄⠄⠄⡑⡏⠯⡯⡳⡯⣗⢯⢟⡽⣗⣯⣟⣿⣿⣾⣫⢿⣽⠾⡽⣺⢳⡫⡞⡗⡝⢕⠕⠄⠄⠄<br>⠄⠄⠄⢂⡎⠅⡃⢇⠇⠇⣃⣧⡺⡻⡳⡫⣿⡿⣟⠞⠽⠯⢧⣅⣃⠣⠱⡑⡑⠨⢐⢌⠂⠄⠄<br>⠄⠄⠄⠐⠼⣦⢀⠄⣶⣿⢿⣿⣧⣄⡌⠂⠢⠩⠂⠑⣁⣅⣾⢿⣟⣷⠦⠄⠄⡤⡇⡪⠄⠄⠄<br>⠄⠄⠄⠄⠨⢻⣧⡅⡈⠛⠿⠿⠿⠛⠁⠄⢀⡀⠄⠄⠘⠻⠿⠿⠯⠓⠁⢠⣱⡿⢑⠄⠄⠄⠄<br>⠄⠄⠄⠄⠈⢌⢿⣷⡐⠤⣀⣀⣂⣀⢀⢀⡓⠝⡂⡀⢀⢀⢀⣀⣀⠤⢊⣼⡟⡡⡁⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠈⢢⠚⣿⣄⠈⠉⠛⠛⠟⠿⠿⠟⠿⠻⠻⠛⠛⠉⠄⣠⠾⢑⠰⠈⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠑⢌⠿⣦⡡⣱⣸⣸⣆⠄⠄⠄⣰⣕⢔⢔⠡⣼⠞⡡⠁⠁⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠑⢝⢷⣕⡷⣿⡿⠄⠄⠠⣿⣯⣯⡳⡽⡋⠌⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠙⢮⣿⣽⣯⠄⠄⢨⣿⣿⡷⡫⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠘⠙⠝⠂⠄⢘⠋⠃⠁⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄</div>",
+        "choices": [
+          {
+            "text": "End Simulation (Major Loss)",
+            "next": "End-Loss",
+            "penalty": 65
+          }
+        ]
+      },
+      {
+        "id": "Mark-the-incident-as-resolved",
+        "text": "<p>You closed the incident, and all is well.</p><p>A month later a similar occurence surges as you had failed to porperly check for any employees who had exposed their accounts by access the phishing link</p><p>You are able to recover and prevent it once again, but at the loss of time and money for the company.</p><div class=\"ascii-art\"><br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⡀⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠈⠄⠄⠄⠁⠄⠁⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⣀⣀⣤⣤⣴⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣦⣤⣤⣄⣀⡀⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⣴⣿⣿⡿⣿⢿⣟⣿⣻⣟⡿⣟⣿⣟⡿⣟⣿⣻⣟⣿⣻⢿⣻⡿⣿⢿⣷⣆⠄⠄⠄<br>⠄⠄⠄⢘⣿⢯⣷⡿⡿⡿⢿⢿⣷⣯⡿⣽⣞⣷⣻⢯⣷⣻⣾⡿⡿⢿⢿⢿⢯⣟⣞⡮⡀⠄⠄<br>⠄⠄⠄⢸⢞⠟⠃⣉⢉⠉⠉⠓⠫⢿⣿⣷⢷⣻⣞⣿⣾⡟⠽⠚⠊⠉⠉⠉⠙⠻⣞⢵⠂⠄⠄<br>⠄⠄⠄⢜⢯⣺⢿⣻⣿⣿⣷⣔⡄⠄⠈⠛⣿⣿⡾⠋⠁⠄⠄⣄⣶⣾⣿⡿⣿⡳⡌⡗⡅⠄⠄<br>⠄⠄⠄⢽⢱⢳⢹⡪⡞⠮⠯⢯⡻⡬⡐⢨⢿⣿⣿⢀⠐⡥⣻⡻⠯⡳⢳⢹⢜⢜⢜⢎⠆⠄⠄<br>⠄⠄⠠⣻⢌⠘⠌⡂⠈⠁⠉⠁⠘⠑⢧⣕⣿⣿⣿⢤⡪⠚⠂⠈⠁⠁⠁⠂⡑⠡⡈⢮⠅⠄⠄<br>⠄⠄⠠⣳⣿⣿⣽⣭⣶⣶⣶⣶⣶⣺⣟⣾⣻⣿⣯⢯⢿⣳⣶⣶⣶⣖⣶⣮⣭⣷⣽⣗⠍⠄⠄<br>⠄⠄⢀⢻⡿⡿⣟⣿⣻⣽⣟⣿⢯⣟⣞⡷⣿⣿⣯⢿⢽⢯⣿⣻⣟⣿⣻⣟⣿⣻⢿⣿⢀⠄⠄<br>⠄⠄⠄⡑⡏⠯⡯⡳⡯⣗⢯⢟⡽⣗⣯⣟⣿⣿⣾⣫⢿⣽⠾⡽⣺⢳⡫⡞⡗⡝⢕⠕⠄⠄⠄<br>⠄⠄⠄⢂⡎⠅⡃⢇⠇⠇⣃⣧⡺⡻⡳⡫⣿⡿⣟⠞⠽⠯⢧⣅⣃⠣⠱⡑⡑⠨⢐⢌⠂⠄⠄<br>⠄⠄⠄⠐⠼⣦⢀⠄⣶⣿⢿⣿⣧⣄⡌⠂⠢⠩⠂⠑⣁⣅⣾⢿⣟⣷⠦⠄⠄⡤⡇⡪⠄⠄⠄<br>⠄⠄⠄⠄⠨⢻⣧⡅⡈⠛⠿⠿⠿⠛⠁⠄⢀⡀⠄⠄⠘⠻⠿⠿⠯⠓⠁⢠⣱⡿⢑⠄⠄⠄⠄<br>⠄⠄⠄⠄⠈⢌⢿⣷⡐⠤⣀⣀⣂⣀⢀⢀⡓⠝⡂⡀⢀⢀⢀⣀⣀⠤⢊⣼⡟⡡⡁⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠈⢢⠚⣿⣄⠈⠉⠛⠛⠟⠿⠿⠟⠿⠻⠻⠛⠛⠉⠄⣠⠾⢑⠰⠈⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠑⢌⠿⣦⡡⣱⣸⣸⣆⠄⠄⠄⣰⣕⢔⢔⠡⣼⠞⡡⠁⠁⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠑⢝⢷⣕⡷⣿⡿⠄⠄⠠⣿⣯⣯⡳⡽⡋⠌⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠙⢮⣿⣽⣯⠄⠄⢨⣿⣿⡷⡫⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠘⠙⠝⠂⠄⢘⠋⠃⠁⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄</div>",
+        "choices": [
+          {
+            "text": "End Simulation (Loss)",
+            "next": "End-Loss",
+            "penalty": 30
+          }
+        ]
+      },
+      {
+        "id": "Identify-impacted-accounts",
+        "text": "<p>You isolate the login times and see which accounts were affected. Now you need to determine the source and full scope.</p>",
+        "choices": [
+          {
+            "text": "Investigate email sender",
+            "next": "Investigate-email-sender"
+          },
+          {
+            "text": "Monitor the accounts quietly for anomalies",
+            "next": "Monitor-the-accounts-quietly-for-anomalies",
+            "penalty": 10,
+            "mistake": "Passive monitoring of compromised accounts allows the threat actor to pivot or exfiltrate data."
+          }
+        ]
+      },
+      {
+        "id": "Investigate-email-sender",
+        "text": "<p>After your analysis of impacted accounts, you determine that its best to additionally investigate who the sender of the emails is.</p><p>As mentioned prior, the emails were coming from someone who claimed to be the CFO but upon further investigation, you notice that the email sender's address does not appear to match the CFO's regular email address - a clear sign of a fake account.</p>",
+        "choices": [
+          {
+            "text": "Investigate email contents",
+            "next": "Investigate-email-contents"
+          }
+        ]
+      },
+      {
+        "id": "Investigate-email-contents",
+        "text": "<p>You investigate the link contained in the emails in a sandbox environment. The page mimics your company’s password reset site, but the domain is slightly off, colors are wrong, and some links are broken — clear signs of phishing.</p>",
+        "choices": [
+          {
+            "text": "Analyze proxy traffic for clicks.",
+            "next": "Analyze-proxy-traffic-for-clicks"
+          },
+          {
+            "text": "Block all email traffic",
+            "next": "Block-all-email-traffic",
+            "penalty": 65,
+            "mistake": "Blocking all email traffic is a disproportionate response that halts business operations and forces manual recovery."
+          }
+        ]
+      },
+      {
+        "id": "Block-all-email-traffic",
+        "text": "<p>You accidentally cut off all company wide communication, and was forced to rely on manual communication for the rest of the incident, slowing response time, and giving the attacker time to infiltrate your system.</p><p>Along with this, you were forced to do much of the recovery yourself as your team are mainly remote workers.</p><p>Your action, while applicable in some instances, was not suited for the severity of this incident.</p><p>As a result, you are required to undergo further training for incident response.</p><div class=\"ascii-art\"><br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⡀⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠈⠄⠄⠄⠁⠄⠁⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⣀⣀⣤⣤⣴⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣦⣤⣤⣄⣀⡀⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⣴⣿⣿⡿⣿⢿⣟⣿⣻⣟⡿⣟⣿⣟⡿⣟⣿⣻⣟⣿⣻⢿⣻⡿⣿⢿⣷⣆⠄⠄⠄<br>⠄⠄⠄⢘⣿⢯⣷⡿⡿⡿⢿⢿⣷⣯⡿⣽⣞⣷⣻⢯⣷⣻⣾⡿⡿⢿⢿⢿⢯⣟⣞⡮⡀⠄⠄<br>⠄⠄⠄⢸⢞⠟⠃⣉⢉⠉⠉⠓⠫⢿⣿⣷⢷⣻⣞⣿⣾⡟⠽⠚⠊⠉⠉⠉⠙⠻⣞⢵⠂⠄⠄<br>⠄⠄⠄⢜⢯⣺⢿⣻⣿⣿⣷⣔⡄⠄⠈⠛⣿⣿⡾⠋⠁⠄⠄⣄⣶⣾⣿⡿⣿⡳⡌⡗⡅⠄⠄<br>⠄⠄⠄⢽⢱⢳⢹⡪⡞⠮⠯⢯⡻⡬⡐⢨⢿⣿⣿⢀⠐⡥⣻⡻⠯⡳⢳⢹⢜⢜⢜⢎⠆⠄⠄<br>⠄⠄⠠⣻⢌⠘⠌⡂⠈⠁⠉⠁⠘⠑⢧⣕⣿⣿⣿⢤⡪⠚⠂⠈⠁⠁⠁⠂⡑⠡⡈⢮⠅⠄⠄<br>⠄⠄⠠⣳⣿⣿⣽⣭⣶⣶⣶⣶⣶⣺⣟⣾⣻⣿⣯⢯⢿⣳⣶⣶⣶⣖⣶⣮⣭⣷⣽⣗⠍⠄⠄<br>⠄⠄⢀⢻⡿⡿⣟⣿⣻⣽⣟⣿⢯⣟⣞⡷⣿⣿⣯⢿⢽⢯⣿⣻⣟⣿⣻⣟⣿⣻⢿⣿⢀⠄⠄<br>⠄⠄⠄⡑⡏⠯⡯⡳⡯⣗⢯⢟⡽⣗⣯⣟⣿⣿⣾⣫⢿⣽⠾⡽⣺⢳⡫⡞⡗⡝⢕⠕⠄⠄⠄<br>⠄⠄⠄⢂⡎⠅⡃⢇⠇⠇⣃⣧⡺⡻⡳⡫⣿⡿⣟⠞⠽⠯⢧⣅⣃⠣⠱⡑⡑⠨⢐⢌⠂⠄⠄<br>⠄⠄⠄⠐⠼⣦⢀⠄⣶⣿⢿⣿⣧⣄⡌⠂⠢⠩⠂⠑⣁⣅⣾⢿⣟⣷⠦⠄⠄⡤⡇⡪⠄⠄⠄<br>⠄⠄⠄⠄⠨⢻⣧⡅⡈⠛⠿⠿⠿⠛⠁⠄⢀⡀⠄⠄⠘⠻⠿⠿⠯⠓⠁⢠⣱⡿⢑⠄⠄⠄⠄<br>⠄⠄⠄⠄⠈⢌⢿⣷⡐⠤⣀⣀⣂⣀⢀⢀⡓⠝⡂⡀⢀⢀⢀⣀⣀⠤⢊⣼⡟⡡⡁⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠈⢢⠚⣿⣄⠈⠉⠛⠛⠟⠿⠿⠟⠿⠻⠻⠛⠛⠉⠄⣠⠾⢑⠰⠈⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠑⢌⠿⣦⡡⣱⣸⣸⣆⠄⠄⠄⣰⣕⢔⢔⠡⣼⠞⡡⠁⠁⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠑⢝⢷⣕⡷⣿⡿⠄⠄⠠⣿⣯⣯⡳⡽⡋⠌⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠙⢮⣿⣽⣯⠄⠄⢨⣿⣿⡷⡫⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠘⠙⠝⠂⠄⢘⠋⠃⠁⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄</div>",
+        "choices": [
+          {
+            "text": "End Simulation (Major Loss)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Personally-investigate-the-link-Sand-box",
+        "text": "<p>You open the link in a sandboxed environment. The page mimics your company’s password reset site, but the domain is slightly off, colors are wrong, and some links are broken — clear signs of phishing.</p>",
+        "choices": [
+          {
+            "text": "Quarantine the emails for investigation",
+            "next": "Quarantine-the-emails-for-investigation",
+            "penalty": -5
+          },
+          {
+            "text": "Monitor the accounts quietly for anomalies",
+            "next": "Monitor-the-accounts-quietly-for-anomalies",
+            "penalty": 10,
+            "mistake": "Monitoring instead of immediate quarantine allows the threat to persist, increasing the risk of lateral movement."
+          }
+        ]
+      },
+      {
+        "id": "Analyze-proxy-traffic-for-clicks",
+        "text": "<p>You decide to analyze the proxy traffic for any clicks. At 11:00 AM, your analysis revealed that several employees clicked the phishing link, and three entered credentials — including one with IT admin privileges.</p><p>Leadership requests an immediate update: “How many accounts are compromised, and what are we doing about it?” What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Reset passwords of compromised accounts",
+            "next": "Reset-passwords-of-compromised-accounts",
+            "penalty": -10
+          },
+          {
+            "text": "Monitor the accounts quietly for anomalies",
+            "next": "Monitor-the-accounts-quietly-for-anomalies",
+            "penalty": 20,
+            "mistake": "Failing to reset compromised admin accounts immediately is a critical security failure."
+          },
+          {
+            "text": "Take no action since the emails are already blocked",
+            "next": "Take-no-action-since-the-emails-are-already-blocked",
+            "penalty": 25,
+            "mistake": "Ignoring the existing compromise (stolen credentials) is a catastrophic failure."
+          }
+        ]
+      },
+      {
+        "id": "Reset-passwords-of-compromised-accounts",
+        "text": "<p>You decided to reset the password of all the compromised accounts, potentially preventing access from the actors. However, how future proof is this?</p><p>How will you prevent and contain incidents like these in the future?</p>",
+        "choices": [
+          {
+            "text": "Block sender IP",
+            "next": "Block-sender-IP",
+            "penalty": 10,
+            "mistake": "Blocking the IP is a short-term fix; it doesn't protect against future, similar attacks from new sources."
+          },
+          {
+            "text": "Block sender email address",
+            "next": "Block-sender-email-address",
+            "penalty": 10,
+            "mistake": "Blocking the email address is temporary; attackers can easily spoof a new address."
+          },
+          {
+            "text": "Enforce MFA on employee accounts where available",
+            "next": "Enforce-MFA-on-employee-accounts-where-available",
+            "penalty": -5
+          }
+        ]
+      },
+      {
+        "id": "Monitor-the-accounts-quietly-for-anomalies",
+        "text": "<p>You choose to monitor logs instead of immediate action.</p><p>By the afternoon, the attacker successfully logs in with a stolen IT credential and creates new user accounts with admin rights.</p><p>With the new accounts, company and customer sensitive data is exfiltrated, leaving the company at a loss and in a class action lawsuit.</p><p>Due to your lack of timely action and failure to follow procedures,</p><p><strong>You have been terminated.</strong></p><div class=\"ascii-art\"><br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢡⡾⠋⠉⠀⠄⢈⣿⠸⠿⠿⢿⣿⡏⢸⣿⣷⡌⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣯⣀⠈⣀⢠⣴⣿⣿⣿⣿⣿⣿⣷⣶⣾⠙⠛⠇⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⣿⣿⣧⣶⣾⢻⣿⣿⣿⣿⣿⣿⢻⣿⣿⡇⠀⠁⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⡀⣿⣿⣿⣿⣿⡈⣿⣿⣿⣿⣿⡿⢸⣿⣿⣷⣆⡀⣅⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠇⢸⣿⣿⣿⣿⡇⠋⡌⣿⡟⡄⠃⣿⣿⣿⣿⣿⠃⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⣤⣛⡿⠿⣿⢿⣀⠃⠻⠇⠃⣠⠿⠿⢿⣛⣩⣄⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢰⠸⢿⣿⣷⣶⣦⣬⣓⣒⣒⣫⣥⣶⣾⣿⠿⠿⠟⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠔⠀⠒⠂⠈⠙⠛⠿⣿⣿⣿⠿⠛⠋⠉⠀⠈⠉⠈⠂⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣄⡇⠀⠀⢅⢂⡄⠀⠀⢛⠃⠀⠀⠄⢁⠄⠀⠀⣧⡆⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢻⡇⣦⣀⣀⣀⠀⠀⣠⠀⢰⣀⠀⠀⢀⣀⣤⡆⡟⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠠⣷⣬⣭⣭⣶⣶⣿⠋⠀⠀⠻⣿⠿⢶⣶⣶⣾⡷⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠉⠉⡉⠀⠀⢈⣧⡀⠀⣀⣠⣿⠀⠀⠀⠈⠉⡄⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⡄⢸⣏⣹⣿⣿⣉⣿⠀⠀⠀⠀⠀⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠉⢉⢈⡉⡁⡀⠉⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⠀⠂⠀⢠⡀⠂⠌⠠⠁⠐⢀⠴⠀⠠⠠⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⢀⠱⡀⡀⠌⠇⣶⣶⣾⠋⠃⡄⠠⠐⢡⡇⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⢋⣥⠀⢀⠠⠁⠐⢀⣾⣬⣭⣭⣼⡀⠅⠀⠐⠿⠇⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⡿⠟⣋⣤⣴⣾⣿⡇⠀⡼⠀⢀⠀⠉⢹⣿⣿⣯⢩⣭⡄⠞⢠⣿⡆⠇⢠⣬⡍⣙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⡿⠿⠋⣥⣶⣿⣿⣿⣿⣿⠿⠃⣤⠀⠀⣸⣿⣦⠀⠠⣤⣉⢀⡉⠁⢰⡆⢿⢿⡆⢸⣿⣇⣿⢰⣶⣶⣬⣍⡙⠛⠿⠿⢿⣿<br></div>",
+        "choices": [
+          {
+            "text": "End Simulation (Major Loss)",
+            "next": "End-Loss",
+            "penalty": 65
+          }
+        ]
+      },
+      {
+        "id": "Take-no-action-since-the-emails-are-already-blocked",
+        "text": "<p>Despite blocking the phishing emails, the stolen credentials are still valid.</p><p>Attackers gain access to finance systems, leading to unauthorized wire transfers by evening.</p><p>You have been hacked.</p><div class=\"ascii-art\"><br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⡀⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠈⠄⠄⠄⠁⠄⠁⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⣀⣀⣤⣤⣴⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣦⣤⣤⣄⣀⡀⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⣴⣿⣿⡿⣿⢿⣟⣿⣻⣟⡿⣟⣿⣟⡿⣟⣿⣻⣟⣿⣻⢿⣻⡿⣿⢿⣷⣆⠄⠄⠄<br>⠄⠄⠄⢘⣿⢯⣷⡿⡿⡿⢿⢿⣷⣯⡿⣽⣞⣷⣻⢯⣷⣻⣾⡿⡿⢿⢿⢿⢯⣟⣞⡮⡀⠄⠄<br>⠄⠄⠄⢸⢞⠟⠃⣉⢉⠉⠉⠓⠫⢿⣿⣷⢷⣻⣞⣿⣾⡟⠽⠚⠊⠉⠉⠉⠙⠻⣞⢵⠂⠄⠄<br>⠄⠄⠄⢜⢯⣺⢿⣻⣿⣿⣷⣔⡄⠄⠈⠛⣿⣿⡾⠋⠁⠄⠄⣄⣶⣾⣿⡿⣿⡳⡌⡗⡅⠄⠄<br>⠄⠄⠄⢽⢱⢳⢹⡪⡞⠮⠯⢯⡻⡬⡐⢨⢿⣿⣿⢀⠐⡥⣻⡻⠯⡳⢳⢹⢜⢜⢜⢎⠆⠄⠄<br>⠄⠄⠠⣻⢌⠘⠌⡂⠈⠁⠉⠁⠘⠑⢧⣕⣿⣿⣿⢤⡪⠚⠂⠈⠁⠁⠁⠂⡑⠡⡈⢮⠅⠄⠄<br>⠄⠄⠠⣳⣿⣿⣽⣭⣶⣶⣶⣶⣶⣺⣟⣾⣻⣿⣯⢯⢿⣳⣶⣶⣶⣖⣶⣮⣭⣷⣽⣗⠍⠄⠄<br>⠄⠄⢀⢻⡿⡿⣟⣿⣻⣽⣟⣿⢯⣟⣞⡷⣿⣿⣯⢿⢽⢯⣿⣻⣟⣿⣻⣟⣿⣻⢿⣿⢀⠄⠄<br>⠄⠄⠄⡑⡏⠯⡯⡳⡯⣗⢯⢟⡽⣗⣯⣟⣿⣿⣾⣫⢿⣽⠾⡽⣺⢳⡫⡞⡗⡝⢕⠕⠄⠄⠄<br>⠄⠄⠄⢂⡎⠅⡃⢇⠇⠇⣃⣧⡺⡻⡳⡫⣿⡿⣟⠞⠽⠯⢧⣅⣃⠣⠱⡑⡑⠨⢐⢌⠂⠄⠄<br>⠄⠄⠄⠐⠼⣦⢀⠄⣶⣿⢿⣿⣧ℌ⡌⠂⠢⠩⠂⠑⣁⣅⣾⢿⣟⣷⠦⠄⠄⡤⡇⡪⠄⠄⠄<br>⠄⠄⠄⠄⠨⢻⣧⡅⡈⠛⠿⠿⠿⠛⠁⠄⢀⡀⠄⠄⠘⠻⠿⠿⠯⠓⠁⢠⣱⡿⢑⠄⠄⠄⠄<br>⠄⠄⠄⠄⠈⢌⢿⣷⡐⠤⣀⣀⣂⣀⢀⢀⡓⠝⡂⡀⢀⢀⢀⣀⣀⠤⢊⣼⡟⡡⡁⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠈⢢⠚⣿⣄⠈⠉⠛⠛⠟⠿⠿⠟⠿⠻⠻⠛⠛⠉⠄⣠⠾⢑⠰⠈⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠑⢌⠿⣦⡡⣱⣸⣸⣆⠄⠄⠄⣰⣕⢔⢔⠡⣼⠞⡡⠁⠁⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠑⢝⢷⣕⡷⣿⡿⠄⠄⠠⣿⣯⣯⡳⡽⡋⠌⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠙⢮⣿⣽⣯⠄⠄⢨⣿⣿⡷⡫⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠘⠙⠝⠂⠄⢘⠋⠃⠁⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄</div>",
+        "choices": [
+          {
+            "text": "End Simulation (Major Loss)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Block-sender-IP",
+        "text": "<p>You block the sender IP, successfully preventing future attacks from this same IP. However, employee credentials are still at risk from suffering similar attacks by different actors. How will you prevent future attacks?</p>",
+        "choices": [
+          {
+            "text": "Enforce MFA on employee accounts where available",
+            "next": "Enforce-MFA-on-employee-accounts-where-available",
+            "penalty": -5
+          },
+          {
+            "text": "Require the use of a password manager",
+            "next": "Require-the-use-of-a-password-manager",
+            "penalty": 5,
+            "mistake": "Password managers are helpful, but MFA is the superior technical control against credential theft."
+          },
+          {
+            "text": "Update the password complexity requirements",
+            "next": "Update-the-password-complexity-requirements",
+            "penalty": 5,
+            "mistake": "Password complexity is a weak control compared to MFA and is easily bypassed."
+          }
+        ]
+      },
+      {
+        "id": "Enforce-MFA-on-employee-accounts-where-available",
+        "text": "<p>You decided that the best course of action was to enforce MFA (Multi-Factor Authentication)</p><p>This move, successfully prevented any future similar attacks, and has overall provided an additional layer of security to the company making The Overdraft Emporium more secure than it has ever been.</p><p>In addition to this, your suggestion for periodical phishing awareness training for all employees to ensure any employee can hopefully identify a phishing attempt, was approved by the higher-ups.</p><p>Your quick thinking, successful defense methods, and forward thinking suggestions, has given you a promotion to Manager of the SOC team.</p><p>Congratulations!</p><div class=\"ascii-art\"><br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⡀⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠈⠄⠄⠄⠁⠄⠁⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⣀⣀⣤⣤⣴⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣦⣤⣤⣄⣀⡀⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⣴⣿⣿⡿⣿⢿⣟⣿⣻⣟⡿⣟⣿⣟⡿⣟⣿⣻⣟⣿⣻⢿⣻⡿⣿⢿⣷⣆⠄⠄⠄<br>⠄⠄⠄⢘⣿⢯⣷⡿⡿⡿⢿⢿⣷⣯⡿⣽⣞⣷⣻⢯⣷⣻⣾⡿⡿⢿⢿⢿⢯⣟⣞⡮⡀⠄⠄<br>⠄⠄⠄⢸⢞⠟⠃⣉⢉⠉⠉⠓⠫⢿⣿⣷⢷⣻⣞⣿⣾⡟⠽⠚⠊⠉⠉⠉⠙⠻⣞⢵⠂⠄⠄<br>⠄⠄⠄⢜⢯⣺⢿⣻⣿⣿⣷⣔⡄⠄⠈⠛⣿⣿⡾⠋⠁⠄⠄⣄⣶⣾⣿⡿⣿⡳⡌⡗⡅⠄⠄<br>⠄⠄⠄⢽⢱⢳⢹⡪⡞⠮⠯⢯⡻⡬⡐⢨⢿⣿⣿⢀⠐⡥⣻⡻⠯⡳⢳⢹⢜⢜⢜⢎⠆⠄⠄<br>⠄⠄⠠⣻⢌⠘⠌⡂⠈⠁⠉⠁⠘⠑⢧⣕⣿⣿⣿⢤⡪⠚⠂⠈⠁⠁⠁⠂⡑⠡⡈⢮⠅⠄⠄<br>⠄⠄⠠⣳⣿⣿⣽⣭⣶⣶⣶⣶⣶⣺⣟⣾⣻⣿⣯⢯⢿⣳⣶⣶⣶⣖⣶⣮⣭⣷⣽⣗⠍⠄⠄<br>⠄⠄⢀⢻⡿⡿⣟⣿⣻⣽⣟⣿⢯⣟⣞⡷⣿⣿⣯⢿⢽⢯⣿⣻⣟⣿⣻⣟⣿⣻⢿⣿⢀⠄⠄<br>⠄⠄⠄⡑⡏⠯⡯⡳⡯⣗⢯⢟⡽⣗⣯⣟⣿⣿⣾⣫⢿⣽⠾⡽⣺⢳⡫⡞⡗⡝⢕⠕⠄⠄⠄<br>⠄⠄⠄⢂⡎⠅⡃⢇⠇⠇⣃⣧⡺⡻⡳⡫⣿⡿⣟⠞⠽⠯⢧⣅⣃⠣⠱⡑⡑⠨⢐⢌⠂⠄⠄<br>⠄⠄⠄⠐⠼⣦⢀⠄⣶⣿⢿⣿⣧⣄⡌⠂⠢⠩⠂⠑⣁⣅⣾⢿⣟⣷⠦⠄⠄⡤⡇⡪⠄⠄⠄<br>⠄⠄⠄⠄⠨⢻⣧⡅⡈⠛⠿⠿⠿⠛⠁⠄⢀⡀⠄⠄⠘⠻⠿⠿⠯⠓⠁⢠⣱⡿⢑⠄⠄⠄⠄<br>⠄⠄⠄⠄⠈⢌⢿⣷⡐⠤⣀⣀⣂⣀⢀⢀⡓⠝⡂⡀⢀⢀⢀⣀⣀⠤⢊⣼⡟⡡⡁⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠈⢢⠚⣿⣄⠈⠉⠛⠛⠟⠿⠿⠟⠿⠻⠻⠛⠛⠉⠄⣠⠾⢑⠰⠈⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠑⢌⠿⣦⡡⣱⣸⣸⣆⠄⠄⠄⣰⣕⢔⢔⠡⣼⠞⡡⠁⠁⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠑⢝⢷⣕⡷⣿⡿⠄⠄⠠⣿⣯⣯⡳⡽⡋⠌⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠙⢮⣿⣽⣯⠄⠄⢨⣿⣿⡷⡫⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠘⠙⠝⠂⠄⢘⠋⠃⠁⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄</div>",
+        "choices": [
+          {
+            "text": "End Simulation (Success)",
+            "next": "End-Win"
+          }
+        ]
+      },
+      {
+        "id": "Require-the-use-of-a-password-manager",
+        "text": "<p>The sticky note budget for the company has significantly reduced as no one is writing down their passwords anymore. However, their credentials are still just as exposed.</p><p>Since you failed to properly protect employee credentials, another threat actor has breached the company through an admin's account. This causes a loss for the company and a demotion for you to enter security awareness training.</p><div class=\"ascii-art\"><br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⡀⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠈⠄⠄⠄⠁⠄⠁⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⣀⣀⣤⣤⣴⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣦⣤⣤⣄⣀⡀⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⣴⣿⣿⡿⣿⢿⣟⣿⣻⣟⡿⣟⣿⣟⡿⣟⣿⣻⣟⣿⣻⢿⣻⡿⣿⢿⣷⣆⠄⠄⠄<br>⠄⠄⠄⢘⣿⢯⣷⡿⡿⡿⢿⢿⣷⣯⡿⣽⣞⣷⣻⢯⣷⣻⣾⡿⡿⢿⢿⢿⢯⣟⣞⡮⡀⠄⠄<br>⠄⠄⠄⢸⢞⠟⠃⣉⢉⠉⠉⠓⠫⢿⣿⣷⢷⣻⣞⣿⣾⡟⠽⠚⠊⠉⠉⠉⠙⠻⣞⢵⠂⠄⠄<br>⠄⠄⠄⢜⢯⣺⢿⣻⣿⣿⣷⣔⡄⠄⠈⠛⣿⣿⡾⠋⠁⠄⠄⣄⣶⣾⣿⡿⣿⡳⡌⡗⡅⠄⠄<br>⠄⠄⠄⢽⢱⢳⢹⡪⡞⠮⠯⢯⡻⡬⡐⢨⢿⣿⣿⢀⠐⡥⣻⡻⠯⡳⢳⢹⢜⢜⢜⢎⠆⠄⠄<br>⠄⠄⠠⣻⢌⠘⠌⡂⠈⠁⠉⠁⠘⠑⢧⣕⣿⣿⣿⢤⡪⠚⠂⠈⠁⠁⠁⠂⡑⠡⡈⢮⠅⠄⠄<br>⠄⠄⠠⣳⣿⣿⣽⣭⣶⣶⣶⣶⣶⣺⣟⣾⣻⣿⣯⢯⢿⣳⣶⣶⣶⣖⣶⣮⣭⣷⣽⣗⠍⠄⠄<br>⠄⠄⢀⢻⡿⡿⣟⣿⣻⣽⣟⣿⢯⣟⣞⡷⣿⣿⣯⢿⢽⢯⣿⣻⣟⣿⣻⣟⣿⣻⢿⣿⢀⠄⠄<br>⠄⠄⠄⡑⡏⠯⡯⡳⡯⣗⢯⢟⡽⣗⣯⣟⣿⣿⣾⣫⢿⣽⠾⡽⣺⢳⡫⡞⡗⡝⢕⠕⠄⠄⠄<br>⠄⠄⠄⢂⡎⠅⡃⢇⠇⠇⣃⣧⡺⡻⡳⡫⣿⡿⣟⠞⠽⠯⢧⣅⣃⠣⠱⡑⡑⠨⢐⢌⠂⠄⠄<br>⠄⠄⠄⠐⠼⣦⢀⠄⣶⣿⢿⣿⣧⣄⡌⠂⠢⠩⠂⠑⣁⣅⣾⢿⣟⣷⠦⠄⠄⡤⡇⡪⠄⠄⠄<br>⠄⠄⠄⠄⠨⢻⣧⡅⡈⠛⠿⠿⠿⠛⠁⠄⢀⡀⠄⠄⠘⠻⠿⠿⠯⠓⠁⢠⣱⡿⢑⠄⠄⠄⠄<br>⠄⠄⠄⠄⠈⢌⢿⣷⡐⠤⣀⣀⣂⣀⢀⢀⡓⠝⡂⡀⢀⢀⢀⣀⣀⠤⢊⣼⡟⡡⡁⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠈⢢⠚⣿⣄⠈⠉⠛⠛⠟⠿⠿⠟⠿⠻⠻⠛⠛⠉⠄⣠⠾⢑⠰⠈⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠑⢌⠿⣦⡡⣱⣸⣸⣆⠄⠄⠄⣰⣕⢔⢔⠡⣼⠞⡡⠁⠁⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠑⢝⢷⣕⡷⣿⡿⠄⠄⠠⣿⣯⣯⡳⡽⡋⠌⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠙⢮⣿⣽⣯⠄⠄⢨⣿⣿⡷⡫⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠘⠙⠝⠂⠄⢘⠋⠃⠁⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄</div>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 65
+          }
+        ]
+      },
+      {
+        "id": "Update-the-password-complexity-requirements",
+        "text": "<p>An audit is performed on the company, and they determine that your password complexity requirements are non-compliant. After adjusting your complexity requirements (and paying a small fee) you have successfully protected your fellow employees' credentials. The question is, for how long?</p><div class=\"ascii-art\"><br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⡀⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠈⠄⠄⠄⠁⠄⠁⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⣀⣀⣤⣤⣴⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣦⣤⣤⣄⣀⡀⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⣴⣿⣿⡿⣿⢿⣟⣿⣻⣟⡿⣟⣿⣟⡿⣟⣿⣻⣟⣿⣻⢿⣻⡿⣿⢿⣷⣆⠄⠄⠄<br>⠄⠄⠄⢘⣿⢯⣷⡿⡿⡿⢿⢿⣷⣯⡿⣽⣞⣷⣻⢯⣷⣻⣾⡿⡿⢿⢿⢿⢯⣟⣞⡮⡀⠄⠄<br>⠄⠄⠄⢸⢞⠟⠃⣉⢉⠉⠉⠓⠫⢿⣿⣷⢷⣻⣞⣿⣾⡟⠽⠚⠊⠉⠉⠉⠙⠻⣞⢵⠂⠄⠄<br>⠄⠄⠄⢜⢯⣺⢿⣻⣿⣿⣷⣔⡄⠄⠈⠛⣿⣿⡾⠋⠁⠄⠄⣄⣶⣾⣿⡿⣿⡳⡌⡗⡅⠄⠄<br>⠄⠄⠄⢽⢱⢳⢹⡪⡞⠮⠯⢯⡻⡬⡐⢨⢿⣿⣿⢀⠐⡥⣻⡻⠯⡳⢳⢹⢜⢜⢜⢎⠆⠄⠄<br>⠄⠄⠠⣻⢌⠘⠌⡂⠈⠁⠉⠁⠘⠑⢧⣕⣿⣿⣿⢤⡪⠚⠂⠈⠁⠁⠁⠂⡑⠡⡈⢮⠅⠄⠄<br>⠄⠄⠠⣳⣿⣿⣽⣭⣶⣶⣶⣶⣶⣺⣟⣾⣻⣿⣯⢯⢿⣳⣶⣶⣶⣖⣶⣮⣭⣷⣽⣗⠍⠄⠄<br>⠄⠄⢀⢻⡿⡿⣟⣿⣻⣽⣟⣿⢯⣟⣞⡷⣿⣿⣯⢿⢽⢯⣿⣻⣟⣿⣻⣟⣿⣻⢿⣿⢀⠄⠄<br>⠄⠄⠄⡑⡏⠯⡯⡳⡯⣗⢯⢟⡽⣗⣯⣟⣿⣿⣾⣫⢿⣽⠾⡽⣺⢳⡫⡞⡗⡝⢕⠕⠄⠄⠄<br>⠄⠄⠄⢂⡎⠅⡃⢇⠇⠇⣃⣧⡺⡻⡳⡫⣿⡿⣟⠞⠽⠯⢧⣅⣃⠣⠱⡑⡑⠨⢐⢌⠂⠄⠄<br>⠄⠄⠄⠐⠼⣦⢀⠄⣶⣿⢿⣿⣧⣄⡌⠂⠢⠩⠂⠑⣁⣅⣾⢿⣟⣷⠦⠄⠄⡤⡇⡪⠄⠄⠄<br>⠄⠄⠄⠄⠨⢻⣧⡅⡈⠛⠿⠿⠿⠛⠁⠄⢀⡀⠄⠄⠘⠻⠿⠿⠯⠓⠁⢠⣱⡿⢑⠄⠄⠄⠄<br>⠄⠄⠄⠄⠈⢌⢿⣷⡐⠤⣀⣀⣂⣀⢀⢀⡓⠝⡂⡀⢀⢀⢀⣀⣀⠤⢊⣼⡟⡡⡁⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠈⢢⠚⣿⣄⠈⠉⠛⠛⠟⠿⠿⠟⠿⠻⠻⠛⠛⠉⠄⣠⠾⢑⠰⠈⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠑⢌⠿⣦⡡⣱⣸⣸⣆⠄⠄⠄⣰⣕⢔⢔⠡⣼⠞⡡⠁⠁⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠑⢝⢷⣕⡷⣿⡿⠄⠄⠠⣿⣯⣯⡳⡽⡋⠌⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠙⢮⣿⣽⣯⠄⠄⢨⣿⣿⡷⡫⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠘⠙⠝⠂⠄⢘⠋⠃⠁⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄</div>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 65
+          }
+        ]
+      },
+      {
+        "id": "Block-sender-email-address",
+        "text": "<p>You're under the impression that the attack has been mitigated by blocking the sender email address. However, four weeks later, you discover a similar attack has been brought against your system. You come to the conclusion that your system has been breached, causing leakage of not only employee data, but sensitive high-value client financial information. This caused some of these partners to seek business elsewhere, resulting in company loss. You resolve the issue and block the sender IP, preventing any future attacks. The company is safe now, however, with a smaller profit margin.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Major Loss)",
+            "next": "End-Loss",
+            "penalty": 65
+          }
+        ]
+      },
+      {
+        "id": "reset-passwords-to-see-if-it-was-a-system-error",
+        "text": "<p>You decide to reset the affected users passwords and are under the impression that all is resolved. However while reseting users passwords you discover a user you do not recognize. What should you do?</p>",
+        "choices": [
+          {
+            "text": "Continue about your day since the passwords have been fully reset",
+            "next": "Continue-about-your-day-since-the-passwords-have-been-fully-reset",
+            "penalty": 15,
+            "mistake": "Ignoring an unauthorized user found during an incident is a major operational security failure."
+          },
+          {
+            "text": "Delete the user",
+            "next": "Delete-the-user",
+            "penalty": 15,
+            "mistake": "Deleting a user without investigation could violate retention policies and cause business damage."
+          },
+          {
+            "text": "Check with HR about recent hires",
+            "next": "Check-with-HR-about-recent-hires",
+            "penalty": -5
+          }
+        ]
+      },
+      {
+        "id": "Check-with-HR-about-recent-hires",
+        "text": "<p>You decide to contact HR and ask about any recent hires that match the users credentials. They notify you that there is no current employee under the name you provided. You investigate this user further and find that they have signed on incredibly recently.</p>",
+        "choices": [
+          {
+            "text": "Review SIEM and SSO logs.",
+            "next": "Review-SIEM-and-SSO-logs"
+          }
+        ]
+      },
+      {
+        "id": "Continue-about-your-day-since-the-passwords-have-been-fully-reset",
+        "text": "<p>You decided to continue about your day since passwords have been fully reset for all the affected users.</p><p>However, later that week, it is discovered that a threat actor has not only breached the system, but has exfiltrated company and customer sensitive data.</p><p>In order to find out what went wrong, your company decided to perform an audit and security log analysis to understand what was done in response or if anything had been detected. It was found that the user you decided to ignore was actually a newly created account by the threat actor and that was the reason for the breach.</p><p>Due to your lack of proper procedures, the company was breached, resulting in a class action lawsuit against the company.</p><p><strong>You have been terminated.</strong></p><div class=\"ascii-art\"><br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢡⡾⠋⠉⠀⠄⢈⣿⠸⠿⠿⢿⣿⡏⢸⣿⣷⡌⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣯⣀⠈⣀⢠⣴⣿⣿⣿⣿⣿⣿⣷⣶⣾⠙⠛⠇⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⣿⣿⣧⣶⣾⢻⣿⣿⣿⣿⣿⣿⢻⣿⣿⡇⠀⠁⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⡀⣿⣿⣿⣿⣿⡈⣿⣿⣿⣿⣿⡿⢸⣿⣿⣷⣆⡀⣅⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠇⢸⣿⣿⣿⣿⡇⠋⡌⣿⡟⡄⠃⣿⣿⣿⣿⣿⠃⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⣤⣛⡿⠿⣿⢿⣀⠃⠻⠇⠃⣠⠿⠿⢿⣛⣩⣄⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢰⠸⢿⣿⣷⣶⣦⣬⣓⣒⣒⣫⣥⣶⣾⣿⠿⠿⠟⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠔⠀⠒⠂⠈⠙⠛⠿⣿⣿⣿⠿⠛⠋⠉⠀⠈⠉⠈⠂⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣄⡇⠀⠀⢅⢂⡄⠀⠀⢛⠃⠀⠀⠄⢁⠄⠀⠀⣧⡆⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢻⡇⣦⣀⣀⣀⠀⠀⣠⠀⢰⣀⠀⠀⢀⣀⣤⡆⡟⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠠⣷⣬⣭⣭⣶⣶⣿⠋⠀⠀⠻⣿⠿⢶⣶⣶⣾⡷⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠉⠉⡉⠀⠀⢈⣧⡀⠀⣀⣠⣿⠀⠀⠀⠈⠉⡄⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⡄⢸⣏⣹⣿⣿⣉⣿⠀⠀⠀⠀⠀⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠉⢉⢈⡉⡁⡀⠉⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⠀⠂⠀⢠⡀⠂⠌⠠⠁⠐⢀⠴⠀⠠⠠⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⢀⠱⡀⡀⠌⠇⣶⣶⣾⠋⠃⡄⠠⠐⢡⡇⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⢋⣥⠀⢀⠠⠁⠐⢀⣾⣬⣭⣭⣼⡀⠅⠀⠐⠿⠇⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⡿⠟⣋⣤⣴⣾⣿⡇⠀⡼⠀⢀⠀⠉⢹⣿⣿⣯⢩⣭⡄⠞⢠⣿⡆⠇⢠⣬⡍⣙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⡿⠿⠋⣥⣶⣿⣿⣿⣿⣿⠿⠃⣤⠀⠀⣸⣿⣦⠀⠠⣤⣉⢀⡉⠁⢰⡆⢿⢿⡆⢸⣿⣇⣿⢰⣶⣶⣬⣍⡙⠛⠿⠿⢿⣿<br></div>",
+        "choices": [
+          {
+            "text": "End Simulation (Major Loss)",
+            "next": "End-Loss",
+            "penalty": 65
+          }
+        ]
+      },
+      {
+        "id": "Delete-the-user",
+        "text": "<p>You decided to delete the user. An hour later, you are pinged by your immediate managers and are notified that you deleted a legitimate user. You speak with them about the current password issue you were working on and explain that, that is why you deleted the user. After hearing your explanation they decide that you are not fit for the current role as you have taken the improper steps and could have damaged the company.</p><div class=\"ascii-art\"><br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⡀⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠈⠄⠄⠄⠁⠄⠁⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⣀⣀⣤⣤⣴⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣦⣤⣤⣄⣀⡀⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⣴⣿⣿⡿⣿⢿⣟⣿⣻⣟⡿⣟⣿⣟⡿⣟⣿⣻⣟⣿⣻⢿⣻⡿⣿⢿⣷⣆⠄⠄⠄<br>⠄⠄⠄⢘⣿⢯⣷⡿⡿⡿⢿⢿⣷⣯⡿⣽⣞⣷⣻⢯⣷⣻⣾⡿⡿⢿⢿⢿⢯⣟⣞⡮⡀⠄⠄<br>⠄⠄⠄⢸⢞⠟⠃⣉⢉⠉⠉⠓⠫⢿⣿⣷⢷⣻⣞⣿⣾⡟⠽⠚⠊⠉⠉⠉⠙⠻⣞⢵⠂⠄⠄<br>⠄⠄⠄⢜⢯⣺⢿⣻⣿⣿⣷⣔⡄⠄⠈⠛⣿⣿⡾⠋⠁⠄⠄⣄⣶⣾⣿⡿⣿⡳⡌⡗⡅⠄⠄<br>⠄⠄⠄⢽⢱⢳⢹⡪⡞⠮⠯⢯⡻⡬⡐⢨⢿⣿⣿⢀⠐⡥⣻⡻⠯⡳⢳⢹⢜⢜⢜⢎⠆⠄⠄<br>⠄⠄⠠⣻⢌⠘⠌⡂⠈⠁⠉⠁⠘⠑⢧⣕⣿⣿⣿⢤⡪⠚⠂⠈⠁⠁⠁⠂⡑⠡⡈⢮⠅⠄⠄<br>⠄⠄⠠⣳⣿⣿⣽⣭⣶⣶⣶⣶⣶⣺⣟⣾⣻⣿⣯⢯⢿⣳⣶⣶⣶⣖⣶⣮⣭⣷⣽⣗⠍⠄⠄<br>⠄⠄⢀⢻⡿⡿⣟⣿⣻⣽⣟⣿⢯⣟⣞⡷⣿⣿⣯⢿⢽⢯⣿⣻⣟⣿⣻⣟⣿⣻⢿⣿⢀⠄⠄<br>⠄⠄⠄⡑⡏⠯⡯⡳⡯⣗⢯⢟⡽⣗⣯⣟⣿⣿⣾⣫⢿⣽⠾⡽⣺⢳⡫⡞⡗⡝⢕⠕⠄⠄⠄<br>⠄⠄⠄⢂⡎⠅⡃⢇⠇⠇⣃⣧⡺⡻⡳⡫⣿⡿⣟⠞⠽⠯⢧⣅⣃⠣⠱⡑⡑⠨⢐⢌⠂⠄⠄<br>⠄⠄⠄⠐⠼⣦⢀⠄⣶⣿⢿⣿⣧⣄⡌⠂⠢⠩⠂⠑⣁⣅⣾⢿⣟⣷⠦⠄⠄⡤⡇⡪⠄⠄⠄<br>⠄⠄⠄⠄⠨⢻⣧⡅⡈⠛⠿⠿⠿⠛⠁⠄⢀⡀⠄⠄⠘⠻⠿⠿⠯⠓⠁⢠⣱⡿⢑⠄⠄⠄⠄<br>⠄⠄⠄⠄⠈⢌⢿⣷⡐⠤⣀⣀⣂⣀⢀⢀⡓⠝⡂⡀⢀⢀⢀⣀⣀⠤⢊⣼⡟⡡⡁⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠈⢢⠚⣿⣄⠈⠉⠛⠛⠟⠿⠿⠟⠿⠻⠻⠛⠛⠉⠄⣠⠾⢑⠰⠈⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠑⢌⠿⣦⡡⣱⣸⣸⣆⠄⠄⠄⣰⣕⢔⢔⠡⣼⠞⡡⠁⠁⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠑⢝⢷⣕⡷⣿⡿⠄⠄⠠⣿⣯⣯⡳⡽⡋⠌⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠙⢮⣿⣽⣯⠄⠄⢨⣿⣿⡷⡫⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠘⠙⠝⠂⠄⢘⠋⠃⠁⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄<br>⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄</div>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 65
+          }
+        ]
+      },
+      {
+        "id": "View-network-logs",
+        "text": "<p>The network logs confirm that the phishing emails were successful and several users clicked the link.</p>",
+        "choices": [
+          {
+            "text": "Analyze proxy traffic for clicks.",
+            "next": "Analyze-proxy-traffic-for-clicks"
+          }
+        ]
+      },
+      {
+        "id": "End-Win",
+        "text": "<p>SUCCESS: You have successfully navigated the incident response process. Your swift and targeted actions saved the company from a major breach. You minimized disruption and secured forensic data for future defenses.</p><div class=\"ascii-art\"><br>__  __ _       _       _       <br>\\\\ \\/ /(_) __ _| | __ _| |_ ___ <br> \\\\  / | |/ _` | |/ _` | __/ _ \\<br>  /  \\\\ | | (_| | | (_| | ||  __\\<br> /_/\\\\_\\\\| |\\__,_|_|\\__,_|\\__\\___|<br>       |_|<br></div>",
+        "choices": []
+      },
+      {
+        "id": "End-Loss",
+        "text": "<p>FAILURE: Your misstep led to a critical failure or a full-scale breach. Sensitive data has been compromised or significant loss occurred. The cleanup will be costly, and the company's reputation is at risk.</p><div class=\"ascii-art\"><br> _       _    _   _   _ <br>| |     | |  | | | | | |<br>| |     | |  | | | | | |<br>| |     | |  | | | | | |<br>| |____ | |__| | | |_| |<br>|______| \\\\____/   \\\\___/ <br></div>",
+        "choices": []
+      }
+    ]
+  },
+  {
+    "scenarioId": "INSIDER_THREAT_01",
+    "scenarioTitle": "Insider Threat",
+    "startPassageId": "Insider Threat",
+    "passages": [
+      {
+        "id": "Insider Threat",
+        "text": "<p>It's late Friday afternoon, and the SOC has just been alerted that a system administrator’s credentials are currently being used to access a restricted HR server.</p><p>Logs are actively showing multiple attempts to compress and transfer files and the activity is still in progress.</p><p>At the same time, several new failed login alerts are appearing across different systems, indicating the same account is being used to attempt access elsewhere in the network.</p><p>The IT manager has just discovered these alerts and escalated them to the security team.</p><p>The account has been used on multiple systems, but it is unclear whether the credentials were stolen or if the activity is coming from a trusted insider abusing access.</p><p>The incident is active, and the security team must respond immediately.</p>",
+        "choices": [
+          {
+            "text": "Investigate alert to determine scope of file compression and transfer",
+            "next": "Investigate-alert-to-determine-scope-of-file-compression-and-transfer",
+            "penalty": 0
+          },
+          {
+            "text": "Isolate the system administrator's device",
+            "next": "Isolate-the-system-administrators-device",
+            "penalty": 10,
+            "mistake": "Isolating the device prematurely without confirming the source of the activity may disrupt business unnecessarily."
+          },
+          {
+            "text": "Determine the destination of the file transfer",
+            "next": "Determine-the-destination-of-the-file-transfer",
+            "penalty": 5,
+            "mistake": "Focusing on the destination first might delay critical containment actions."
+          }
+        ]
+      },
+      {
+        "id": "Investigate-alert-to-determine-scope-of-file-compression-and-transfer",
+        "text": "<p>You investigate the alert about file compression and transfer to identify which files are being exfiltrated from your network.</p><p>The documents being transferred contain employee data, salary records, and security IDs - they are sensitive files not meant to leave your network.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Ask the system administrator if it was them",
+            "next": "Ask-the-system-administrator-if-it-was-them",
+            "penalty": 0
+          },
+          {
+            "text": "Request the credentials to be frozen",
+            "next": "Request-the-credentials-to-be-frozen",
+            "penalty": 10,
+            "mistake": "Freezing credentials without verification can cause operational disruption if the activity is legitimate."
+          },
+          {
+            "text": "Change system admin permissions to read only temporarily",
+            "next": "Change-system-admin-permissions-to-read-only-temporarily",
+            "penalty": 10,
+            "mistake": "Changing permissions without communication can alert the attacker or disrupt legitimate work."
+          }
+        ]
+      },
+      {
+        "id": "Ask-the-system-administrator-if-it-was-them",
+        "text": "<p>You call the system administrator and provide them with details of the activity occurring within their account.</p><p>You ask if it was them, and if so, what they were doing.</p><p>They give you a definitive no, and you quickly end the call to continue your incident response.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Investigate IP address associated with data exfiltration",
+            "next": "Investigate-IP-address-associated-with-data-exfiltration",
+            "penalty": 0
+          },
+          {
+            "text": "Go to HR under suspicion of the admin lying",
+            "next": "Go-to-HR-under-suspicion-of-the-admin-lying",
+            "penalty": 10,
+            "mistake": "Going to HR based on suspicion alone delays the technical investigation."
+          },
+          {
+            "text": "Immediately block admin access",
+            "next": "Immediately-block-admin-access",
+            "penalty": 15,
+            "mistake": "Blocking access without sufficient evidence can be premature and disruptive."
+          }
+        ]
+      },
+      {
+        "id": "Investigate-IP-address-associated-with-data-exfiltration",
+        "text": "<p>You investigate the IP address that is using the system administrator account and the endpoint to which it is exfiltrating data.</p><p>The IP associated with the account is within your local network, and it is sending data to an endpoint outside of your network, in a neighboring city.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Determine device name associated with IP",
+            "next": "Determine-device-name-associated-with-IP",
+            "penalty": 0
+          },
+          {
+            "text": "Block all outbound traffic",
+            "next": "Block-all-outbound-traffic",
+            "penalty": 65,
+            "mistake": "Blocking all outbound traffic is a drastic measure that stops all business operations."
+          },
+          {
+            "text": "Block the endpoint IP",
+            "next": "Block-the-endpoint-IP",
+            "penalty": 65,
+            "mistake": "Blocking the endpoint IP only temporarily stops the data transfer, allowing the attacker to pivot."
+          }
+        ]
+      },
+      {
+        "id": "Determine-device-name-associated-with-IP",
+        "text": "<p>You query logs in your SIEM system to find device info.</p><p>You find the device name associated with the IP address initiating the data exfiltration: WINDOWS-197.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Check SSO logs to find which user typically logs into this device",
+            "next": "Check-SSO-logs-to-find-which-user-typically-logs-into-this-device",
+            "penalty": 0
+          },
+          {
+            "text": "Sieze the PC",
+            "next": "Sieze-the-PC",
+            "penalty": 10,
+            "mistake": "Seizing the PC prematurely can alert the attacker and may not stop the attack if initiated elsewhere."
+          },
+          {
+            "text": "Disable internet access to the PC",
+            "next": "Disable-internet-access-to-the-PC",
+            "penalty": 10,
+            "mistake": "Disabling internet access is a temporary fix; the attacker can move to another device."
+          }
+        ]
+      },
+      {
+        "id": "Check-SSO-logs-to-find-which-user-typically-logs-into-this-device",
+        "text": "<p>You check the SSO logs, but you find that this device is used by many users within the company.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Investigate data exfiltration times",
+            "next": "Investigate-data-exfiltration-times",
+            "penalty": 0
+          },
+          {
+            "text": "Determine and list all users for this computer",
+            "next": "Determine-and-list-all-users-for-this-computer",
+            "penalty": 5,
+            "mistake": "Listing users takes time; investigating specific activity times is more efficient."
+          },
+          {
+            "text": "Disable internet access to the PC",
+            "next": "Disable-internet-access-to-the-PC",
+            "penalty": 10,
+            "mistake": "Again, disabling access is a temporary measure that doesn't solve the root cause."
+          }
+        ]
+      },
+      {
+        "id": "Investigate-data-exfiltration-times",
+        "text": "<p>You return to the alert on file compression and transfer and identify the exact times of data exfiltration.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Map data exfiltration times to device SSO logs",
+            "next": "Map-data-exfiltration-times-to-device-SSO-logs",
+            "penalty": 0
+          },
+          {
+            "text": "Block all outbound traffic on this device",
+            "next": "Block-all-outbound-traffic-on-this-device",
+            "penalty": 5,
+            "mistake": "Blocking traffic is reactive; you need to identify the user responsible."
+          },
+          {
+            "text": "Consult the IT department on who was using the device at this time",
+            "next": "Consult-the-IT-department-on-who-was-using-the-device-at-this-time",
+            "penalty": 5,
+            "mistake": "Consulting IT adds a layer of delay when logs can provide the answer directly."
+          }
+        ]
+      },
+      {
+        "id": "Map-data-exfiltration-times-to-device-SSO-logs",
+        "text": "<p>After identifying the exact times of data exfiltration, you return to SSO logs from the device used.</p><p>During this time, a mid-manager in the IT department, Guy F., was logged into the device.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Revoke session tokens and reset credentials",
+            "next": "Revoke-session-tokens-and-reset-credentials",
+            "penalty": 0
+          },
+          {
+            "text": "Ask Guy F. what he was doing on the device",
+            "next": "Ask-Guy-F-what-he-was-doing-on-the-device",
+            "penalty": 5,
+            "mistake": "Asking the suspect directly gives them a chance to lie or cover their tracks."
+          },
+          {
+            "text": "Contact HR with findings",
+            "next": "Contact-HR-with-findings",
+            "penalty": 25,
+            "mistake": "Contacting HR prematurely without securing the account allows the exfiltration to continue."
+          }
+        ]
+      },
+      {
+        "id": "Revoke-session-tokens-and-reset-credentials",
+        "text": "<p>You revoke session tokens to terminate any active sessions and prevent any further activity from the system admin account.</p><p>You then reset the credentials to this account to prevent Guy F. from accessing it in the future.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Talk to HR about employee behavior",
+            "next": "Talk-to-HR-about-employee-behavior",
+            "penalty": 0
+          },
+          {
+            "text": "Directly confront the employee",
+            "next": "Directly-confront-the-employee",
+            "penalty": 65,
+            "mistake": "Direct confrontation can lead to immediate escalation and loss of evidence."
+          }
+        ]
+      },
+      {
+        "id": "Talk-to-HR-about-employee-behavior",
+        "text": "<p>You report your findings about Guy F. and his data exfiltration to HR, letting them know that you have identified him as an insider threat.</p><p>However, you still need to contact Guy F.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Confront the employee in a controlled environment",
+            "next": "Confront-the-employee-in-a-controlled-environment",
+            "penalty": 0
+          },
+          {
+            "text": "Email the employee that they are being terminated",
+            "next": "Email-the-employee-that-they-are-being-terminated",
+            "penalty": 10,
+            "mistake": "Emailing the employee gives them a warning and an opportunity to destroy evidence."
+          }
+        ]
+      },
+      {
+        "id": "Confront-the-employee-in-a-controlled-environment",
+        "text": "<p>You confront Guy F. in a small meeting room, away from his desk or the PC used for data exfiltration.</p><p>Guy's manager is there with you, along with an HR representative.</p><p>You let Guy F. know that you have identified unusual activity involving sensitive information associated with the company PC he was using at the time and that you are conducting a security investigation.</p><p>You ask him several questions to collect any more evidence on the incident, determining that he was definitely responsible for the data exfiltration.</p><p>Your investigation is complete.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Contact Legal and HR",
+            "next": "Contact-Legal-and-HR",
+            "penalty": 0
+          },
+          {
+            "text": "Allow Guy F. to continue working under close supervision",
+            "next": "Allow-Guy-F-to-continue-working-under-close-supervision",
+            "penalty": 65,
+            "mistake": "Allowing a proven insider threat to continue working risks further damage."
+          },
+          {
+            "text": "Demote Guy F. and restrict employee access to non-sensitive material only",
+            "next": "Demote-Guy-F-and-restrict-employee-access-to-non-sensitive-material-only",
+            "penalty": 65,
+            "mistake": "Demotion is insufficient for confirmed data theft; he remains a risk."
+          }
+        ]
+      },
+      {
+        "id": "Contact-Legal-and-HR",
+        "text": "<p>You reach out to legal and HR, presenting them with a timeline of all of the evidence you have collected over the course of the incident.</p><p>They let you know that the amount of evidence you present them with is sufficient to prove the Guy F. is an insider threat.</p><p>HR asks your opinion on how to handle Guy F. and prevent future attacks.</p>",
+        "choices": [
+          {
+            "text": "Fire employee",
+            "next": "Fire-employee",
+            "penalty": 0
+          },
+          {
+            "text": "Give Guy F. the opportuntity to resign before terminating him",
+            "next": "Give-Guy-F-the-opportuntity-to-resign-before-terminating-him",
+            "penalty": 65,
+            "mistake": "Allowing him to resign avoids a record of termination, potentially endangering future employers."
+          },
+          {
+            "text": "Allow Guy F. to finish his current project before firing him",
+            "next": "Allow-Guy-F-to-finish-his-current-project-before-firing-him",
+            "penalty": 65,
+            "mistake": "Retaining an insider threat for any duration is an unacceptable risk."
+          }
+        ]
+      },
+      {
+        "id": "Fire-employee",
+        "text": "<p>Based on your advice, HR immediately fires Guy F. without giving him a chance to resign or finish any current tasks.</p><p>Your efforts led to identifying the correct suspect for the insider threat, along with mitigating this threat.</p><p>Guy F. no longer poses a risk to the company or to other companies as his data exfiltation will remain on his record.</p><p>Congratulations, you have kept your job as a security analyst and proven yourself a valuable asset to the company.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Success)",
+            "next": "End-Win",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Isolate-the-system-administrators-device",
+        "text": "<p>You immediately isolate the sys admin's device.</p><p>However, the attacker was never operating from this device - they are using the admin credentials from another device.</p><p>The data download and transfer has continued, and the scope of the incident has expanded.</p><p>In addition, you receive an angry call from the system administrator, whose work has been interrupted.</p><p>He demands that you return his device to the company network.</p>",
+        "choices": [
+          {
+            "text": "Request the credentials to be frozen",
+            "next": "Request-the-credentials-to-be-frozen",
+            "penalty": 10,
+            "mistake": "Freezing credentials disrupts the admin without solving the underlying issue."
+          },
+          {
+            "text": "Temporarily stop all file transfer traffic",
+            "next": "Temporarily-stop-all-file-transfer-traffic",
+            "penalty": 65,
+            "mistake": "Stopping all file traffic disrupts business critical operations."
+          },
+          {
+            "text": "Investigate file transfer source",
+            "next": "Investigate-file-transfer-source",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Determine-the-destination-of-the-file-transfer",
+        "text": "<p>You determined the destination that the sensitive files were being sent to, but the attacker continued to download and transfer files during your investigation.</p><p>The scope of the incident continues to increase.</p>",
+        "choices": [
+          {
+            "text": "Block all traffic to destination IP",
+            "next": "Block-all-traffic-to-destination-IP",
+            "penalty": 5,
+            "mistake": "Blocking one IP might not stop the attacker if they can switch destinations."
+          },
+          {
+            "text": "Identify all files that have been downloaded and transfered",
+            "next": "Identify-all-files-that-have-been-downloaded-and-transfered",
+            "penalty": 5,
+            "mistake": "Focusing on what was lost distracts from stopping the active leak."
+          },
+          {
+            "text": "Block the attackers credentials",
+            "next": "Block-the-attackers-credentials",
+            "penalty": 5,
+            "mistake": "Blocking credentials without verifying who is using them can disrupt legitimate users."
+          }
+        ]
+      },
+      {
+        "id": "Request-the-credentials-to-be-frozen",
+        "text": "<p>You suspect the system administrator is behind the data exfiltration.</p><p>You freeze his credentials, locking him out of his account and preventing any further action.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Report the system admin to HR as an insider threat",
+            "next": "Report-the-system-admin-to-HR-as-an-insider-threat",
+            "penalty": 10,
+            "mistake": "Reporting without hard evidence is premature."
+          },
+          {
+            "text": "Investigate IP address associated with data exfiltration",
+            "next": "Investigate-IP-address-associated-with-data-exfiltration",
+            "penalty": 0
+          },
+          {
+            "text": "Seize the admin's device for forensic investigation",
+            "next": "Seize-the-admins-device-for-forensic-investigation",
+            "penalty": 10,
+            "mistake": "Seizing the device prematurely alerts the suspect."
+          }
+        ]
+      },
+      {
+        "id": "Change-system-admin-permissions-to-read-only-temporarily",
+        "text": "<p>You temporarily set the system administrator's permissions to read-only.</p><p>The system admin within minutes immediately calls you and asks what are you doing and what right do you think you have to remove his permissions.</p><p>He is incredibly aggressive and is threatening your job.</p><p>He says your making a mistake and that he has not done anything.</p><p>Do you...</p>",
+        "choices": [
+          {
+            "text": "Go to HR under suspicion of the admin lying",
+            "next": "Go-to-HR-under-suspicion-of-the-admin-lying",
+            "penalty": 10,
+            "mistake": "Going to HR without evidence escalates the conflict unnecessarily."
+          },
+          {
+            "text": "Investigate IP address associated with data exfiltration",
+            "next": "Investigate-IP-address-associated-with-data-exfiltration",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Go-to-HR-under-suspicion-of-the-admin-lying",
+        "text": "<p>You decide to go to HR under the suspicion that the admin is lying.</p><p>HR is hesitant to investigate but decides to follow through.</p><p>You find out that the Admin is completely clean after the siezing of his pc temporarily.</p><p>The investigation proved nothing, and diminished the admin's trust with you.</p><p>Response time was delayed and now even more files have been exfiltrated.</p><p>What do you do next?</p>",
+        "choices": [
+          {
+            "text": "Investigate IP address associated with data exfiltration",
+            "next": "Investigate-IP-address-associated-with-data-exfiltration",
+            "penalty": 0
+          },
+          {
+            "text": "Continue your suspicions of the sys admin and contact legal due to obstruction from HR",
+            "next": "Continue-your-suspicions-of-the-sys-admin-and-contact-legal-due-to-obstruction-from-HR",
+            "penalty": 65,
+            "mistake": "Ignoring evidence and pursuing a personal vendetta is unprofessional and dangerous."
+          },
+          {
+            "text": "Consult HR on other suspicious employees that could be behind the exfiltration",
+            "next": "Consult-HR-on-other-suspicious-employees-that-could-be-behind-the-exfiltration",
+            "penalty": 10,
+            "mistake": "Consulting HR for 'suspicious employees' is a fishing expedition, not an investigation."
+          }
+        ]
+      },
+      {
+        "id": "Immediately-block-admin-access",
+        "text": "<p>You decide to immediately block the admin's access based off of your brief conversation with them.</p><p>Immediately you are pinged by the admin asking what it is that you think you are doing.</p><p>He immediately is furious and questions your logic asking why you didn't contact him further and give him more information about the situation.</p><p>He states that he can help you and swears that he is not the threat.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Investigate IP address associated with data exfiltration",
+            "next": "Investigate-IP-address-associated-with-data-exfiltration",
+            "penalty": 0
+          },
+          {
+            "text": "Report the system admin to HR as an insider threat",
+            "next": "Report-the-system-admin-to-HR-as-an-insider-threat",
+            "penalty": 10,
+            "mistake": "Reporting without evidence escalates the situation and damages professional relationships."
+          }
+        ]
+      },
+      {
+        "id": "Block-all-outbound-traffic",
+        "text": "<p>After your discovery about data being sent outside the network, you determine that the best course of action is to block all outbound traffic from leaving your network in order to stop the data transfer.</p><p>Despite your good intentions, you failed to think about the other reprecautions that could come from this action.</p><p>While you may have stopped the data from being leaked outside the company, your action put the entire business on hold as data traffic could no longer leave the network.</p><p>Your action despite its good intentions, was uninformed and hasty, leading you to be required to complete incident response training and be placed as seconday responder to any further actions for the near future.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Block-the-endpoint-IP",
+        "text": "<p>You block this endpoint IP and temporarily pause data exfiltration.</p><p>You close the incident, assuming it has been completely mitigated and resolved.</p><p>However, you receive an alert several hours later that data is being exfiltrated to a new endpoint in another neighboring city.</p><p>It is clear that the attacker is working with someone else.</p><p>Because of your failure to respond appropriately, you gave the attackers a gap of time in which to complete their data exfiltration and receive a mass amount of files.</p><p>The security lead is angry with you for giving the company a false sense of security in closing the incident prematurely.</p><p>He is debating whether to keep you on as a security analyst.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Sieze-the-PC",
+        "text": "<p>You decide to seize the pc, the only problem is that despite your seize the attack is still occuring from another computer within the company.</p><p>What do you do?</p>",
+        "choices": [
+          {
+            "text": "Seize all computers",
+            "next": "Seize-all-computers",
+            "penalty": 65,
+            "mistake": "Seizing all computers shuts down the company completely."
+          },
+          {
+            "text": "Seize the new suspected PC",
+            "next": "Seize-the-new-suspected-PC",
+            "penalty": 65,
+            "mistake": "You are chasing symptoms, not the cause."
+          },
+          {
+            "text": "Check SSO logs to find which user typically logs into this device",
+            "next": "Check-SSO-logs-to-find-which-user-typically-logs-into-this-device",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Disable-internet-access-to-the-PC",
+        "text": "<p>You decide to disable internet access to the PC halting the file transfer process.</p><p>While this works temporarily, almost immediately the process is restarted by another PC within the company.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Check SSO logs to find which user typically logs into this device",
+            "next": "Check-SSO-logs-to-find-which-user-typically-logs-into-this-device",
+            "penalty": 0
+          },
+          {
+            "text": "Disable internet access to this new PC",
+            "next": "Disable-internet-access-to-this-new-PC",
+            "penalty": 65,
+            "mistake": "Chasing the attack from PC to PC is ineffective and ignores the root cause."
+          },
+          {
+            "text": "Conduct internal analysis to identify other PCs communicating with this endpoint",
+            "next": "Conduct-internal-analysis-to-identify-other-PCs-communicating-with-this-endpoint",
+            "penalty": 65,
+            "mistake": "This analysis takes too long while data is actively leaving."
+          }
+        ]
+      },
+      {
+        "id": "Determine-and-list-all-users-for-this-computer",
+        "text": "<p>You check the listed users for the device and come to the conclusion that more than 10 employees currently use this device as the company does not utilize a personal cubicle structure.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Investigate all users on their recent activity",
+            "next": "Investigate-all-users-on-their-recent-activity",
+            "penalty": 10,
+            "mistake": "Investigating everyone is a massive waste of time."
+          },
+          {
+            "text": "Investigate data exfiltration times",
+            "next": "Investigate-data-exfiltration-times",
+            "penalty": 0
+          },
+          {
+            "text": "Suspend all the listed users credentials",
+            "next": "Suspend-all-the-listed-users-credentials",
+            "penalty": 65,
+            "mistake": "Suspending everyone disrupts business for many innocent users."
+          }
+        ]
+      },
+      {
+        "id": "Block-all-outbound-traffic-on-this-device",
+        "text": "<p>You block all the traffic on this device however, it is not long before another device begins to exfiltrate data in the exact same fashion within the network.</p><p>You're left stumped as to what is next and decide to revisit your previous thought process.</p>",
+        "choices": [
+          {
+            "text": "Investigate data exfiltration times",
+            "next": "Investigate-data-exfiltration-times",
+            "penalty": 5,
+            "mistake": "You've realized blocking the device didn't stop the user."
+          }
+        ]
+      },
+      {
+        "id": "Consult-the-IT-department-on-who-was-using-the-device-at-this-time",
+        "text": "<p>After consulting with the IT Department, you discover a new employee, Guy F., was on the device at the time.</p><p>Him being a new employee he could be undergoing training.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Ask Guy F. what he was doing on the device",
+            "next": "Ask-Guy-F-what-he-was-doing-on-the-device",
+            "penalty": 5,
+            "mistake": "Asking the suspect directly gives them a chance to lie."
+          },
+          {
+            "text": "Assume that Guy is undergoing training and could not be the threat",
+            "next": "Assume-that-Guy-is-undergoing-training-and-could-not-be-the-threat",
+            "penalty": 65,
+            "mistake": "Assumptions are dangerous in security; verify, don't assume."
+          },
+          {
+            "text": "Map data exfiltration times to device SSO logs",
+            "next": "Map-data-exfiltration-times-to-device-SSO-logs",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Ask-Guy-F-what-he-was-doing-on-the-device",
+        "text": "<p>You decide to speak with Guy F. about what he was doing on the device, questioning what he was up to during the time he was using the device.</p><p>He immediately is defensive, asking why you need to know this information and all that he was doing was his typical daily tasks.</p><p>Your suspicious of Guy, however you have no hardcore evidence pointing to him directly doing anything malicious.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Talk to HR about employee behavior",
+            "next": "Talk-to-HR-about-employee-behavior",
+            "penalty": 0
+          },
+          {
+            "text": "Revoke session tokens and reset credentials",
+            "next": "Revoke-session-tokens-and-reset-credentials",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Contact-HR-with-findings",
+        "text": "<p>You contact HR with your findings, and they determine that you have probable evidence for an insider threat.</p><p>They go with you and expedite the matter to legal, where it is determined that the only option is for the immediate termination of the employee.</p><p>Law enforcement, enters the building and arrests the employee, seemingly neutralizing the threat.</p><p>Through investigation efforts, detectives understand that this employee was bought out by another leading competitor in the industry and that was the reason for his betrayal.</p><p>Despite you're effective efforts in threat removal, the exfiltration was able to continue for a short time after his termination, and your competitor was able to still gather the data.</p><p>While you are unable to enter a lawsuit with the competitor as no hard evidence linked to them, the future of security and trust for your company has changed forever.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Success)",
+            "next": "End-Win",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Directly-confront-the-employee",
+        "text": "<p>You directly confront the user behind the data exfiltration.</p><p>The employee is immediately belligerent, spouting claims that they haven't done anything and why would you assume that they have done something.</p><p>Employees around notice the commotion and call for security to remove the employee.</p><p>Before security arrives however, the employee immediately deletes their cloud account leaving no trace if they did anything.</p><p>Due to the lack of evidence the employee is free to go.</p><p>Later on it employees notice more and more attacks coming in with their credentials being utilized.</p><p>Eventually the threats go too strong for the company and overall a shutdown must occur.</p><p>This leaves the company with a huge deficit in profits and public opinon, leading the public to search out for the competition.</p><p>With that being said, the competition thrives and your company falls, leading you to believe that his might have been a ploy from the competition, but once again, you have no evidence.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Email-the-employee-that-they-are-being-terminated",
+        "text": "<p>You email Guy F. and let him know that he is being terminated from the company.</p><p>Despite his session tokens being revoked, along with the system admin credentials reset, Guy F. still returns to the device he used for the exfiltration and deletes any stored files, applications used for exfiltration, and wipes browser and command history that haven't yet been collected by the security team.</p><p>You decide that the best course of action is to contact legal immediately after this transpired.</p>",
+        "choices": [
+          {
+            "text": "Contact Legal and HR",
+            "next": "Contact-Legal-and-HR",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Allow-Guy-F-to-continue-working-under-close-supervision",
+        "text": "<p>You allow Guy F. to continue working on his current projects but under close supervision.</p><p>You respect his apparant skills with technology and would like to keep him as an asset to the company.</p><p>Because of this, you decided not to report his actions as an insider threat to HR or your legal team, knowing he would be convicted of his crimes.</p><p>Several weeks later, another alert pops up, indicating data exfiltration.</p><p>You furiously search through logs, immediately suspecting Guy F.</p><p>Your quick investigation leads you to the conclusiont that Guy F. logged into his account after hours, exfiltrated all sensitive data he was working with, and logged back out.</p><p>The next day, Guy F. does not show up to work and the company is unable to get in contact with him.</p><p>You report him to HR and Legal with your new evidence, but the data has already been exfiltrated, and Guy F. is gone.</p><p>You mitigated the first data exfiltration incident, but you failed to prevent further attacks.</p><p>Your security lead forces you to undergo mandatory training before continuing in your role as a security analyst.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Demote-Guy-F-and-restrict-employee-access-to-non-sensitive-material-only",
+        "text": "<p>You decide to demote Guy F. and restrict his employee access to non-sensitive material only.</p><p>This demotion came with conflict from the rest of your team stating that his actions were a terminatable offense.</p><p>Despite this, you argued that with his skill he showed through this, he is a valuable asset that needs to be monitored.</p><p>A few months later a similar attack occurs, however this time more advanced and way more successful.</p><p>This paves way for a public fallout with the company, essentially halving the profits for the company.</p><p>It later comes out that once again Guy F. was the individual behind the attack.</p><p>Your lack of proper consequences put the company in jeoprady once again despite your possible good intentions.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Give-Guy-F-the-opportuntity-to-resign-before-terminating-him",
+        "text": "<p>You decide to give Guy F. the chance to resign before being terminated by the company, giving him an opportunity for future job prospects at another company.</p><p>Your decision was based on hopes that he would learn and grow from this experience.</p><p>While your intentions were good, another company hires Guy F. and not long after they face a similar situation.</p><p>Fairness is crucial in any decision, but it is just as crucial to consider the effect on the future when it comes to any decision you make in a scenario such as this.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Allow-Guy-F-to-finish-his-current-project-before-firing-him",
+        "text": "<p>You decide to allow Guy F. to finish his current project before his termination.</p><p>This decision comes with conflict from your team stating that it is a bad idea to allow him to continue to have access to anything within the company.</p><p>You brush it off stating that they are a sophisticated individual within the company and their work can be incredibly beneficial despite their skewed moral compass.</p><p>Later Guy is terminated and all seems well within the company, until the project they were working on is launched.</p><p>This project was aimed at internal employees, essentially giving them a new way to securely store their customer's data in one centralized location.</p><p>Immediately on launch, individuals are locked out of accessing their customer's data and notice that mass exfiltration is occuring.</p><p>Just as fast as it appeared, it disappeared with nearly all customer data being exfiltrated.</p><p>This comes at a huge reputation and profit loss for the company, nearly bankrupting your company.</p><p>After a thorough investigation it is determined that through Guy's last ditch effort on the project, they purposeful created a program that on launch of the project, would enable this attack.</p><p>Your lack of proper procedure/consequences paved way for this attack on the company, and future position on security events has since been lessened.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Investigate-file-transfer-source",
+        "text": "<p>You investigate the file transfer source, looking into the IP address associated with the data exfiltration.</p><p>The IP associated with the account is within your local network, and it is sending data to an endpoint outside of your network, in a neighboring city.</p>",
+        "choices": [
+          {
+            "text": "Look into more details concerning the data exfiltration endpoint",
+            "next": "Look-into-more-details-concerning-the-data-exfiltration-endpoint",
+            "penalty": 0
+          },
+          {
+            "text": "Determine device name associated with IP",
+            "next": "Determine-device-name-associated-with-IP",
+            "penalty": 0
+          },
+          {
+            "text": "Block the IP initiating the data transfer",
+            "next": "Block-the-IP-initiating-the-data-transfer",
+            "penalty": 10,
+            "mistake": "Blocking the IP blindly doesn't solve the underlying issue."
+          }
+        ]
+      },
+      {
+        "id": "Temporarily-stop-all-file-transfer-traffic",
+        "text": "<p>You decided to block all outbound file transfers.</p><p>This halts the data exfiltration, but it inadvertantly disrupts business operations.</p><p>IT is receiving endless calls from concerned employees who cannot transfer files to clients.</p><p>Your action completely disrupted business operations, leading to loss in profits.</p><p>While you're goal was to rid the company of the threat at hand, you threatened business operations with your reckless decision.</p><p>You are required to receive further training due on proper incident response to your hasty actions.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Block-all-traffic-to-destination-IP",
+        "text": "<p>You block all traffic to the destination IP address and assume the investigation is complete.</p><p>After a couple of hours, the traffic begins moving towards a different IP address, continuing to transfer sensitive files outside of your network.</p>",
+        "choices": [
+          {
+            "text": "Block this new destination IP",
+            "next": "Block-this-new-destination-IP",
+            "penalty": 65,
+            "mistake": "Whack-a-mole blocking of IPs is ineffective against a persistent attacker."
+          },
+          {
+            "text": "Determine device name associated with IP",
+            "next": "Determine-device-name-associated-with-IP",
+            "penalty": 0
+          },
+          {
+            "text": "Block the attackers credentials",
+            "next": "Block-the-attackers-credentials",
+            "penalty": 10,
+            "mistake": "Blocking credentials without verifying who is using them is disruptive."
+          }
+        ]
+      },
+      {
+        "id": "Identify-all-files-that-have-been-downloaded-and-transfered",
+        "text": "<p>After identifying all the files to be sensitive information for both customers and employee/the company, you determine that this is a high level threat.</p><p>Recently, the company has been talking about shifting all of the customer and employee data to new databases to upgrade overall security.</p><p>They gave no time frame as to when this would be occuring.</p><p>However, through your time of investigation, the suspected \"attacker\" has gathered even more files.</p><p>What do you do?</p>",
+        "choices": [
+          {
+            "text": "Investigate alert to determine scope of file compression and transfer",
+            "next": "Investigate-alert-to-determine-scope-of-file-compression-and-transfer",
+            "penalty": 0
+          },
+          {
+            "text": "Contact direct manager and ask about data transferring",
+            "next": "Contact-direct-manager-and-ask-about-data-transferring",
+            "penalty": 0
+          },
+          {
+            "text": "Shutdown company traffic to contain information spread and transferring",
+            "next": "Shutdown-company-traffic-to-contain-information-spread-and-transferring",
+            "penalty": 65,
+            "mistake": "Shutting down all company traffic is a catastrophic business decision."
+          }
+        ]
+      },
+      {
+        "id": "Block-the-attackers-credentials",
+        "text": "<p>You decide that the best course of action is to block the supposed attackers credentials, which you believed to be the best course of action to mitigate the threat.</p><p>The system administrator immediately calls you as he is unable to access his account, leading you to question is the admin is lying.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Go to HR under suspicion of the admin lying",
+            "next": "Go-to-HR-under-suspicion-of-the-admin-lying",
+            "penalty": 10,
+            "mistake": "Accusing the admin without evidence causes internal friction and delays the real investigation."
+          },
+          {
+            "text": "Ask the system administrator if it was them",
+            "next": "Ask-the-system-administrator-if-it-was-them",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Report-the-system-admin-to-HR-as-an-insider-threat",
+        "text": "<p>You report the system admin to HR as an insider threat, citing the data exfiltration under his credentials as evidence, along with his explosive reaction to the device isolation and credential freeze.</p><p>HR informs you that this is not sufficient evidence and the investigation must be resumed.</p>",
+        "choices": [
+          {
+            "text": "Investigate IP address associated with data exfiltration",
+            "next": "Investigate-IP-address-associated-with-data-exfiltration",
+            "penalty": 0
+          },
+          {
+            "text": "Look into more details concerning the data exfiltration endpoint",
+            "next": "Look-into-more-details-concerning-the-data-exfiltration-endpoint",
+            "penalty": 0
+          },
+          {
+            "text": "Pull the system admin aside for a verbal investigation",
+            "next": "Pull-the-system-admin-aside-for-a-verbal-investigation",
+            "penalty": 65,
+            "mistake": "Confronting a suspect without HR or Legal presence is a procedural violation."
+          }
+        ]
+      },
+      {
+        "id": "Seize-the-admins-device-for-forensic-investigation",
+        "text": "<p>Now the system admin is your prime suspect.</p><p>You seize his device for forensic investigation.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Investigate IP address associated with data exfiltration",
+            "next": "Investigate-IP-address-associated-with-data-exfiltration",
+            "penalty": 0
+          },
+          {
+            "text": "Report the system admin to HR as an insider threat",
+            "next": "Report-the-system-admin-to-HR-as-an-insider-threat",
+            "penalty": 10,
+            "mistake": "Reporting without investigating the IP address first is missing critical evidence."
+          },
+          {
+            "text": "Confront the system administrator via email with your evidence",
+            "next": "Confront-the-system-administrator-via-email-with-your-evidence",
+            "penalty": 65,
+            "mistake": "Emailing accusations is unprofessional and leaves a paper trail of incompetence if wrong."
+          }
+        ]
+      },
+      {
+        "id": "Continue-your-suspicions-of-the-sys-admin-and-contact-legal-due-to-obstruction-from-HR",
+        "text": "<p>You still think the system administrator is behind the data exfiltration, even if they haven't previously exhibited any signs.</p><p>You contact legal.</p><p>Legal tells you they need hard evidence that directly points to the system administrator.</p><p>Your accusations are a bust.</p><p>Due to your constant accusations despite proof that the admin was clean, the rest of your security team decides to take you off situation as your judgement is deemed clouded and searching the wrong person.</p><p>Through further investigation from the rest of the security team, they are able to determine the insider threat and act promptly.</p><p>Your constant accusations towards the sysadmin additionally made you suspect of harassment towards the admin and an investigation was filed towards you.</p><p>Despite you being innocent, your future of moving up is strongly delayed.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Consult-HR-on-other-suspicious-employees-that-could-be-behind-the-exfiltration",
+        "text": "<p>Now, you're unsure on who is behind the data exfiltration.</p><p>Having no leads, you go to HR again and ask if they know of any employees exhibiting suspicious behavior.</p><p>Due to your baseless claims about the admin, HR is hesitant about any further claims you may make.</p><p>The say that your actions could have harmed the admins reputation and stress that you gather evidence before making another claim.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Investigate IP address associated with data exfiltration",
+            "next": "Investigate-IP-address-associated-with-data-exfiltration",
+            "penalty": 0
+          },
+          {
+            "text": "Continue your suspicions of the sys admin and contact legal due to obstruction from HR",
+            "next": "Continue-your-suspicions-of-the-sys-admin-and-contact-legal-due-to-obstruction-from-HR",
+            "penalty": 65,
+            "mistake": "Persisting in false accusations destroys your credibility."
+          },
+          {
+            "text": "Contact your direct manager",
+            "next": "Contact-your-direct-manager",
+            "penalty": 65,
+            "mistake": "Escalating baseless claims to your manager will likely get you fired."
+          }
+        ]
+      },
+      {
+        "id": "Block-the-IP-initiating-the-data-transfer",
+        "text": "<p>You block the IP that inititated the data transfer from within your company, a local address.</p><p>You close the incident, assuming it was resolved.</p><p>Several hours later, you receive an alert that mass amounts of sensitive files have been transferred out of your network to the same endpoint as the original transfer, this time from a different IP address within your local area network.</p><p>Since you let your guard down, the attacker was able to exfiltrate significantly more files than if the incident had been resolved earlier.</p><p>You decide to visit a previous thought process.</p>",
+        "choices": [
+          {
+            "text": "Determine device name associated with IP",
+            "next": "Determine-device-name-associated-with-IP",
+            "penalty": 5,
+            "mistake": "You missed the initial opportunity to identify the device."
+          }
+        ]
+      },
+      {
+        "id": "Look-into-more-details-concerning-the-data-exfiltration-endpoint",
+        "text": "<p>You verify the IP address is a residential IP address in a nearby city, and you identify the service provider used.</p>",
+        "choices": [
+          {
+            "text": "Look up the system admin's home address in company HR software",
+            "next": "Look-up-the-system-admins-home-address-in-company-HR-software",
+            "penalty": 65,
+            "mistake": "Accessing HR software for personal details without authorization is a privacy violation."
+          },
+          {
+            "text": "Determine device name associated with IP",
+            "next": "Determine-device-name-associated-with-IP",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Seize-the-PC",
+        "text": "<p>You decide to seize the pc, the only problem is that despite your seize the attack is still occuring from another computer within the company.</p><p>What do you do?</p>",
+        "choices": [
+          {
+            "text": "Seize all computers",
+            "next": "Seize-all-computers",
+            "penalty": 65,
+            "mistake": "Seizing all computers shuts down the company completely."
+          },
+          {
+            "text": "Seize the new suspected PC",
+            "next": "Seize-the-new-suspected-PC",
+            "penalty": 65,
+            "mistake": "Reactively seizing PCs without analysis is ineffective."
+          },
+          {
+            "text": "Check SSO logs to find which user typically logs into this device",
+            "next": "Check-SSO-logs-to-find-which-user-typically-logs-into-this-device",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Disable-internet-access-to-the-PC",
+        "text": "<p>You decide to disable internet access to the PC halting the file transfer process.</p><p>While this works temporarily, almost immediately the process is restarted by another PC within the company.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Check SSO logs to find which user typically logs into this device",
+            "next": "Check-SSO-logs-to-find-which-user-typically-logs-into-this-device",
+            "penalty": 0
+          },
+          {
+            "text": "Disable internet access to this new PC",
+            "next": "Disable-internet-access-to-this-new-PC",
+            "penalty": 65,
+            "mistake": "Playing 'whack-a-mole' with internet access disrupts business and fails to stop the attacker."
+          },
+          {
+            "text": "Conduct internal analysis to identify other PCs communicating with this endpoint",
+            "next": "Conduct-internal-analysis-to-identify-other-PCs-communicating-with-this-endpoint",
+            "penalty": 65,
+            "mistake": "Long-winded analysis while data is leaking is a poor prioritization of time."
+          }
+        ]
+      },
+      {
+        "id": "Investigate-all-users-on-their-recent-activity",
+        "text": "<p>You decide to investigate all users on their recent activity within the company.</p><p>Due to the sheer number of users that must be investigated, the investigation takes a huge amount of time.</p><p>You are unable to find any hard evidence against any of the users, but this does not mean there is no threat.</p><p>You decide to revisit a previous option.</p>",
+        "choices": [
+          {
+            "text": "Investigate data exfiltration times",
+            "next": "Investigate-data-exfiltration-times",
+            "penalty": 5,
+            "mistake": "You wasted valuable time investigating innocent users."
+          }
+        ]
+      },
+      {
+        "id": "Suspend-all-the-listed-users-credentials",
+        "text": "<p>You decide to suspend all the listed users credentials.</p><p>This immediately comes with backlash from all the affected employees as they all are scrambling to figure out why they no longer have access.</p><p>This puts a halt on a sector of business operations and even ends up making an employee miss a call from a large buyer of the company, subsequently losing them as a customer.</p><p>This leads to a huge profit dip and a huge strategic reposition for the company.</p><p>Overall the company suffers from this intial action you took despite it being in the company's best interest.</p><p>While you are not terminated, the company determines that you must undergo further training before being on the security team again.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Block-all-outbound-traffic-on-this-device",
+        "text": "<p>You block all the traffic on this device however, it is not long before another device begins to exfiltrate data in the exact same fashion within the network.</p><p>You're left stumped as to what is next and decide to revisit your previous thought process.</p>",
+        "choices": [
+          {
+            "text": "Investigate data exfiltration times",
+            "next": "Investigate-data-exfiltration-times",
+            "penalty": 5,
+            "mistake": "You've realized blocking the device didn't stop the user."
+          }
+        ]
+      },
+      {
+        "id": "Consult-the-IT-department-on-who-was-using-the-device-at-this-time",
+        "text": "<p>After consulting with the IT Department, you discover a new employee, Guy F., was on the device at the time.</p><p>Him being a new employee he could be undergoing training.</p><p>What is your next step?</p>",
+        "choices": [
+          {
+            "text": "Ask Guy F. what he was doing on the device",
+            "next": "Ask-Guy-F-what-he-was-doing-on-the-device",
+            "penalty": 5,
+            "mistake": "Alerting the suspect can compromise the investigation."
+          },
+          {
+            "text": "Assume that Guy is undergoing training and could not be the threat",
+            "next": "Assume-that-Guy-is-undergoing-training-and-could-not-be-the-threat",
+            "penalty": 65,
+            "mistake": "Assumptions are dangerous in security; verify, don't assume."
+          },
+          {
+            "text": "Map data exfiltration times to device SSO logs",
+            "next": "Map-data-exfiltration-times-to-device-SSO-logs",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Contact-direct-manager-and-ask-about-data-transferring",
+        "text": "<p>You ask your manager if they are finally shifting the data to a new database.</p><p>He tells you no, and that it is not expected to happen for atleast a couple of months.</p><p>What do you do?</p>",
+        "choices": [
+          {
+            "text": "Investigate alert to determine scope of file compression and transfer",
+            "next": "Investigate-alert-to-determine-scope-of-file-compression-and-transfer",
+            "penalty": 0
+          },
+          {
+            "text": "Block all traffic to destination IP",
+            "next": "Block-all-traffic-to-destination-IP",
+            "penalty": 5,
+            "mistake": "Blocking traffic without investigation is a stop-gap measure, not a solution."
+          },
+          {
+            "text": "Assume that they are doing the data migration early",
+            "next": "Assume-that-they-are-doing-the-data-migration-early",
+            "penalty": 65,
+            "mistake": "Ignoring the manager's confirmation is gross negligence."
+          }
+        ]
+      },
+      {
+        "id": "Assume-that-they-are-doing-the-data-migration-early",
+        "text": "Despite the indication from your manager that the migration shouldn't be happening for a couple more months, you decide to assume the migration is happening early.\n\nThis assumption proves to be detrimental as the threat is able to double their extraction and continue to grab as much data as possible. Eventually through the detection from another security team member they were able to escalate and remove the threat. It later comes out that you had previously known about this but assumed that it was just a planned event occuring early.\n\nThis assumption led you to require more training and further your knowledge on incident response as your response was deemed unacceptable.",
+        "choices": []
+      },
+      {
+        "id": "Shutdown-company-traffic-to-contain-information-spread-and-transferring",
+        "text": "<p>You decide that the best option to limit anymore file transfers is to fully shutdown the company and all of it's traffic.</p><p>While in theory this may be a good idea to remove all further attempts at gathering data, business operations came at a complete halt causing mass panic within the company.</p><p>Once it came to light that it was your decision your higher-ups scolded you immediately as that was not an option and for your failure of not coming to them before deciding this.</p><p>Despite your good intentions, your actions were too extreme for the scenario and led to business operations being halted all across the board.</p><p>You were placed on leave temporarily for consideration of your future at the company.</p><p>The company decided to place a higher manager on the situation to determine what was the best course of action.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Look-up-the-system-admins-home-address-in-company-HR-software",
+        "text": "<p>You lookup the system admin's home address using HR software that contains employee information.</p><p>You realize the system administrator lives just several blocks away from the company, not in a neighboring city.</p><p>You were on a rabbit trail, and now your investigation is delayed, meaning more sensitive data has been transferred.</p><p>Due to your delayed actions, and more sensitive data being transferred, the event was deemed even more of a major threat to the company.</p><p>Despite your attempts at taking action, it was not done in quick enough time.</p><p>The company faced backlash from the public, when they were informed of their data being leaked.</p><p>This brought huge financial losses for the company making the competition grow exponentially.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Pull-the-system-admin-aside-for-a-verbal-investigation",
+        "text": "<p>Despite discouragement from HR, you pull the system admin aside for an improptu, verbal investigation.</p><p>The system administrator does not take well to your accusations and refuses to cooperate with the investigation, admantely denying your claim of him being an insider threat.</p><p>After the confrontation, the admin reports YOU to HR.</p><p>HR begins the process for your offboarding.</p><div class=\"ascii-art\"><br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢡⡾⠋⠉⠀⠄⢈⣿⠸⠿⠿⢿⣿⡏⢸⣿⣷⡌⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣯⣀⠈⣀⢠⣴⣿⣿⣿⣿⣿⣿⣷⣶⣾⠙⠛⠇⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⣿⣿⣧⣶⣾⢻⣿⣿⣿⣿⣿⣿⢻⣿⣿⡇⠀⠁⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⡀⣿⣿⣿⣿⣿⡈⣿⣿⣿⣿⣿⡿⢸⣿⣿⣷⣆⡀⣅⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠇⢸⣿⣿⣿⣿⡇⠋⡌⣿⡟⡄⠃⣿⣿⣿⣿⣿⠃⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⣤⣛⡿⠿⣿⢿⣀⠃⠻⠇⠃⣠⠿⠿⢿⣛⣩⣄⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢰⠸⢿⣿⣷⣶⣦⣬⣓⣒⣒⣫⣥⣶⣾⣿⠿⠿⠟⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠔⠀⠒⠂⠈⠙⠛⠿⣿⣿⣿⠿⠛⠋⠉⠀⠈⠉⠈⠂⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣄⡇⠀⠀⢅⢂⡄⠀⠀⢛⠃⠀⠀⠄⢁⠄⠀⠀⣧⡆⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢻⡇⣦⣀⣀⣀⠀⠀⣠⠀⢰⣀⠀⠀⢀⣀⣤⡆⡟⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠠⣷⣬⣭⣭⣶⣶⣿⠋⠀⠀⠻⣿⠿⢶⣶⣶⣾⡷⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠉⠉⡉⠀⠀⢈⣧⡀⠀⣀⣠⣿⠀⠀⠀⠈⠉⡄⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⡄⢸⣏⣹⣿⣿⣉⣿⠀⠀⠀⠀⠀⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠉⢉⢈⡉⡁⡀⠉⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⠀⠂⠀⢠⡀⠂⠌⠠⠁⠐⢀⠴⠀⠠⠠⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⢀⠱⡀⡀⠌⠇⣶⣶⣾⠋⠃⡄⠠⠐⢡⡇⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⢋⣥⠀⢀⠠⠁⠐⢀⣾⣬⣭⣭⣼⡀⠅⠀⠐⠿⠇⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⡿⠟⣋⣤⣴⣾⣿⡇⠀⡼⠀⢀⠀⠉⢹⣿⣿⣯⢩⣭⡄⠞⢠⣿⡆⠇⢠⣬⡍⣙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⡿⠿⠋⣥⣶⣿⣿⣿⣿⣿⠿⠃⣤⠀⠀⣸⣿⣦⠀⠠⣤⣉⢀⡉⠁⢰⡆⢿⢿⡆⢸⣿⣇⣿⢰⣶⣶⣬⣍⡙⠛⠿⠿⢿⣿<br></div>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Confront-the-system-administrator-via-email-with-your-evidence",
+        "text": "<p>You send an accusatory email to the system admin, letting him know that you have collected sufficient evidence on him being an insider threat.</p><p>You inform him that he is your main suspect for the recent data exfiltration from his account.</p><p>The system admin uses your own words against you, forwarding the email to HR and reporting you instead.</p><p>HR lets you know that you do not have enough evidence to prove that the admin was truly behind the data exfiltration.</p><p>The security lead is also angry at you for failing as a security analyst, and the rest of the security team has to pick up the slack in the investigation.</p><p>You are fired from your position as a security analyst.</p><div class=\"ascii-art\"><br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢡⡾⠋⠉⠀⠄⢈⣿⠸⠿⠿⢿⣿⡏⢸⣿⣷⡌⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣯⣀⠈⣀⢠⣴⣿⣿⣿⣿⣿⣿⣷⣶⣾⠙⠛⠇⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⣿⣿⣧⣶⣾⢻⣿⣿⣿⣿⣿⣿⢻⣿⣿⡇⠀⠁⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⡀⣿⣿⣿⣿⣿⡈⣿⣿⣿⣿⣿⡿⢸⣿⣿⣷⣆⡀⣅⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠇⢸⣿⣿⣿⣿⡇⠋⡌⣿⡟⡄⠃⣿⣿⣿⣿⣿⠃⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⣤⣛⡿⠿⣿⢿⣀⠃⠻⠇⠃⣠⠿⠿⢿⣛⣩⣄⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢰⠸⢿⣿⣷⣶⣦⣬⣓⣒⣒⣫⣥⣶⣾⣿⠿⠿⠟⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠔⠀⠒⠂⠈⠙⠛⠿⣿⣿⣿⠿⠛⠋⠉⠀⠈⠉⠈⠂⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣄⡇⠀⠀⢅⢂⡄⠀⠀⢛⠃⠀⠀⠄⢁⠄⠀⠀⣧⡆⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢻⡇⣦⣀⣀⣀⠀⠀⣠⠀⢰⣀⠀⠀⢀⣀⣤⡆⡟⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠠⣷⣬⣭⣭⣶⣶⣿⠋⠀⠀⠻⣿⠿⢶⣶⣶⣾⡷⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠉⠉⡉⠀⠀⢈⣧⡀⠀⣀⣠⣿⠀⠀⠀⠈⠉⡄⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⡄⢸⣏⣹⣿⣿⣉⣿⠀⠀⠀⠀⠀⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠉⢉⢈⡉⡁⡀⠉⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⠀⠂⠀⢠⡀⠂⠌⠠⠁⠐⢀⠴⠀⠠⠠⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⢀⠱⡀⡀⠌⠇⣶⣶⣾⠋⠃⡄⠠⠐⢡⡇⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⢋⣥⠀⢀⠠⠁⠐⢀⣾⣬⣭⣭⣼⡀⠅⠀⠐⠿⠇⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⡿⠟⣋⣤⣴⣾⣿⡇⠀⡼⠀⢀⠀⠉⢹⣿⣿⣯⢩⣭⡄⠞⢠⣿⡆⠇⢠⣬⡍⣙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⡿⠿⠋⣥⣶⣿⣿⣿⣿⣿⠿⠃⣤⠀⠀⣸⣿⣦⠀⠠⣤⣉⢀⡉⠁⢰⡆⢿⢿⡆⢸⣿⣇⣿⢰⣶⣶⣬⣍⡙⠛⠿⠿⢿⣿<br></div>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Contact-your-direct-manager",
+        "text": "<p>HR isn't cooperating.</p><p>You assume there is a cover-up, and contact your direct manager about it.</p><p>You determine that HR is also in part with a cover-up trying to protect the sys-admin.</p><p>You believe that you have stumbled upon a huge insider threat scandal, that could if unprevented, destroy the company.</p><p>You decide to go to your direct manager and bring forward your claims.</p><p>Your manager, is furious, stating that your wasting your time on loose claims with no base.</p><p>The admin has been cleared and HR is nowhere near invovled in this, your manager determines that your services are no longer necessary and that you are imagining things that are untrue, trying to get people in trouble for no reason.</p><p>You are terminated, effective immediately.</p><div class=\"ascii-art\"><br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢡⡾⠋⠉⠀⠄⢈⣿⠸⠿⠿⢿⣿⡏⢸⣿⣷⡌⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣯⣀⠈⣀⢠⣴⣿⣿⣿⣿⣿⣿⣷⣶⣾⠙⠛⠇⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⣿⣿⣧⣶⣾⢻⣿⣿⣿⣿⣿⣿⢻⣿⣿⡇⠀⠁⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⡀⣿⣿⣿⣿⣿⡈⣿⣿⣿⣿⣿⡿⢸⣿⣿⣷⣆⡀⣅⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠇⢸⣿⣿⣿⣿⡇⠋⡌⣿⡟⡄⠃⣿⣿⣿⣿⣿⠃⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⣤⣛⡿⠿⣿⢿⣀⠃⠻⠇⠃⣠⠿⠿⢿⣛⣩⣄⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢰⠸⢿⣿⣷⣶⣦⣬⣓⣒⣒⣫⣥⣶⣾⣿⠿⠿⠟⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠔⠀⠒⠂⠈⠙⠛⠿⣿⣿⣿⠿⠛⠋⠉⠀⠈⠉⠈⠂⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣄⡇⠀⠀⢅⢂⡄⠀⠀⢛⠃⠀⠀⠄⢁⠄⠀⠀⣧⡆⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢻⡇⣦⣀⣀⣀⠀⠀⣠⠀⢰⣀⠀⠀⢀⣀⣤⡆⡟⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠠⣷⣬⣭⣭⣶⣶⣿⠋⠀⠀⠻⣿⠿⢶⣶⣶⣾⡷⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠉⠉⡉⠀⠀⢈⣧⡀⠀⣀⣠⣿⠀⠀⠀⠈⠉⡄⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⡄⢸⣏⣹⣿⣿⣉⣿⠀⠀⠀⠀⠀⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠉⢉⢈⡉⡁⡀⠉⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⠀⠂⠀⢠⡀⠂⠌⠠⠁⠐⢀⠴⠀⠠⠠⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⢀⠱⡀⡀⠌⠇⣶⣶⣾⠋⠃⡄⠠⠐⢡⡇⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⢋⣥⠀⢀⠠⠁⠐⢀⣾⣬⣭⣭⣼⡀⠅⠀⠐⠿⠇⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⡿⠟⣋⣤⣴⣾⣿⡇⠀⡼⠀⢀⠀⠉⢹⣿⣿⣯⢩⣭⡄⠞⢠⣿⡆⠇⢠⣬⡍⣙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⡿⠿⠋⣥⣶⣿⣿⣿⣿⣿⠿⠃⣤⠀⠀⣸⣿⣦⠀⠠⣤⣉⢀⡉⠁⢰⡆⢿⢿⡆⢸⣿⣇⣿⢰⣶⣶⣬⣍⡙⠛⠿⠿⢿⣿<br></div>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Seize-all-computers",
+        "text": "<p>You decide that the best course of action is to seize all of the computers within the company under the impression that no computer means no attack.</p><p>This idea could inherently be good if the business didn't need to operate but that is not reality.</p><p>Immediately you are contacted by your managers and they are furious as to what made you think seizing all the computers would be the best course of action.</p><p>Even with the intial seizing of all the computers the attacks still occurred and data was still exfiltrated.</p><p>Your decision cost you your reputation at the company and further required you to undergo training before you would be brought make to the security team in the future.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Seize-the-new-suspected-PC",
+        "text": "<p>After seizing another pc, you determine that the attack is still going, and your managers are incredibly upset as you have directly impacted operations for the company and put an end to your escapades.</p><p>The only problem, they were completely unaware of the attack going on that you were investigating.</p><p>From this more data was stolen until another IT member discovered the same issue.</p><p>The company undergoes a lawsuit due to lack of proper action and failure to protect sensitive data.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Disable-internet-access-to-this-new-PC",
+        "text": "<p>You decide to disable internet access to this new PC once again, halting the file transfer process.</p><p>Similarly however, another PC starts the file transfer process. Following your previous logic, you continue to disable internet access from PC to PC as file transfer continues to begin from different systems.</p><p>You continue to do so until the attacks stop, you believe that you stopped the attack however, in reality, the attacker gathered everything they wanted.</p><p>Your lack of proper action led to company having to send out a breach notification informing the public that almost all customer data was leaked, leading to a huge dip in profits.</p><p>Your failure to properly adapt to the situation and just continue blocking internet access not only cost company reputation but halted business operations as individuals were unable to use the internet for no apparent reason.</p><p>Your actions resulted a in a demotion and further training required until you could return the security team, if the company is still afloat by the time you are able to return to the team.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Conduct-internal-analysis-to-identify-other-PCs-communicating-with-this-endpoint",
+        "text": "<p>Your analysis shows only the isolated machines are involved.</p><p>You isolate the second PC that had began communicating with this data exfiltration endpoint.</p><p>However, several hours after isolation, more sensitive documents are exfiltrated through yet another endpoint from within your internal network.</p>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Assume-that-Guy-is-undergoing-training-and-could-not-be-the-threat",
+        "text": "<p>You assume that Guy is training, over time however the data exfiltrated continues to grow, eventually the threat removes itself before you have the chance to identify and remove it from the system.</p><p>Subsequently, Guy is nowhere to be seen and had apparently \"resigned.\"</p><p>The company meanwhile loses all of its reputation when it comes out that customer's data was leaked and never fully protected, leading to lawsuits and pressure from the public.</p><p>After public pressure, the company closes its doors for good, with your main competitor booming after the incident.</p><p>After losing your job, you sit one night thinking about all the events that transpired that fateful day and what could have been done differently.</p><p>One question won't stop haunting you.</p><p>Was it him?</p><div class=\"ascii-art\"><br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢡⡾⠋⠉⠀⠄⢈⣿⠸⠿⠿⢿⣿⡏⢸⣿⣷⡌⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣯⣀⠈⣀⢠⣴⣿⣿⣿⣿⣿⣿⣷⣶⣾⠙⠛⠇⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⣿⣿⣧⣶⣾⢻⣿⣿⣿⣿⣿⣿⢻⣿⣿⡇⠀⠁⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⡀⣿⣿⣿⣿⣿⡈⣿⣿⣿⣿⣿⡿⢸⣿⣿⣷⣆⡀⣅⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠇⢸⣿⣿⣿⣿⡇⠋⡌⣿⡟⡄⠃⣿⣿⣿⣿⣿⠃⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⣤⣛⡿⠿⣿⢿⣀⠃⠻⠇⠃⣠⠿⠿⢿⣛⣩⣄⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢰⠸⢿⣿⣷⣶⣦⣬⣓⣒⣒⣫⣥⣶⣾⣿⠿⠿⠟⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠔⠀⠒⠂⠈⠙⠛⠿⣿⣿⣿⠿⠛⠋⠉⠀⠈⠉⠈⠂⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣄⡇⠀⠀⢅⢂⡄⠀⠀⢛⠃⠀⠀⠄⢁⠄⠀⠀⣧⡆⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢻⡇⣦⣀⣀⣀⠀⠀⣠⠀⢰⣀⠀⠀⢀⣀⣤⡆⡟⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠠⣷⣬⣭⣭⣶⣶⣿⠋⠀⠀⠻⣿⠿⢶⣶⣶⣾⡷⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠉⠉⡉⠀⠀⢈⣧⡀⠀⣀⣠⣿⠀⠀⠀⠈⠉⡄⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⡄⢸⣏⣹⣿⣿⣉⣿⠀⠀⠀⠀⠀⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠉⢉⢈⡉⡁⡀⠉⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⠀⠂⠀⢠⡀⠂⠌⠠⠁⠐⢀⠴⠀⠠⠠⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⢀⠱⡀⡀⠌⠇⣶⣶⣾⠋⠃⡄⠠⠐⢡⡇⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⢋⣥⠀⢀⠠⠁⠐⢀⣾⣬⣭⣭⣼⡀⠅⠀⠐⠿⠇⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⡿⠟⣋⣤⣴⣾⣿⡇⠀⡼⠀⢀⠀⠉⢹⣿⣿⣯⢩⣭⡄⠞⢠⣿⡆⠇⢠⣬⡍⣙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⡿⠿⠋⣥⣶⣿⣿⣿⣿⣿⠿⠃⣤⠀⠀⣸⣿⣦⠀⠠⣤⣉⢀⡉⠁⢰⡆⢿⢿⡆⢸⣿⣇⣿⢰⣶⣶⣬⣍⡙⠛⠿⠿⢿⣿<br></div>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "Block-this-new-destination-IP",
+        "text": "<p>You decide to, similarly to your last action, block the destination IP once again.</p><p>While this may be a good idea in theory, constantly repeating the same action despite it reoccuring over and over will lead nowhere.</p><p>Your second attempt at blocking the destination IP is successful once again, however not long after another destination IP pops up, one after another every time your block an IP a new one appears until, the attacks stop.</p><p>You believe that everything is all said and done until you realize that the sensitive data gathered from each individual attack amounts to a large portion of all customer data for the company.</p><p>Immediately a breach notification must be sent out after this discovery leading to the company receiving a huge financial and reputation loss.</p><p>The company nearly goes under due to these legal fees and your position is deemed unnecessary after the financial losses.</p><div class=\"ascii-art\"><br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢡⡾⠋⠉⠀⠄⢈⣿⠸⠿⠿⢿⣿⡏⢸⣿⣷⡌⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣯⣀⠈⣀⢠⣴⣿⣿⣿⣿⣿⣿⣷⣶⣾⠙⠛⠇⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⣿⣿⣧⣶⣾⢻⣿⣿⣿⣿⣿⣿⢻⣿⣿⡇⠀⠁⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⡀⣿⣿⣿⣿⣿⡈⣿⣿⣿⣿⣿⡿⢸⣿⣿⣷⣆⡀⣅⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠇⢸⣿⣿⣿⣿⡇⠋⡌⣿⡟⡄⠃⣿⣿⣿⣿⣿⠃⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⣤⣛⡿⠿⣿⢿⣀⠃⠻⠇⠃⣠⠿⠿⢿⣛⣩⣄⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢰⠸⢿⣿⣷⣶⣦⣬⣓⣒⣒⣫⣥⣶⣾⣿⠿⠿⠟⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠔⠀⠒⠂⠈⠙⠛⠿⣿⣿⣿⠿⠛⠋⠉⠀⠈⠉⠈⠂⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣄⡇⠀⠀⢅⢂⡄⠀⠀⢛⠃⠀⠀⠄⢁⠄⠀⠀⣧⡆⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢻⡇⣦⣀⣀⣀⠀⠀⣠⠀⢰⣀⠀⠀⢀⣀⣤⡆⡟⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠠⣷⣬⣭⣭⣶⣶⣿⠋⠀⠀⠻⣿⠿⢶⣶⣶⣾⡷⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠉⠉⡉⠀⠀⢈⣧⡀⠀⣀⣠⣿⠀⠀⠀⠈⠉⡄⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⡄⢸⣏⣹⣿⣿⣉⣿⠀⠀⠀⠀⠀⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠉⢉⢈⡉⡁⡀⠉⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⠀⠂⠀⢠⡀⠂⠌⠠⠁⠐⢀⠴⠀⠠⠠⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⢀⠱⡀⡀⠌⠇⣶⣶⣾⠋⠃⡄⠠⠐⢡⡇⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⢋⣥⠀⢀⠠⠁⠐⢀⣾⣬⣭⣭⣼⡀⠅⠀⠐⠿⠇⡇⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⣿⣿⣿⣿⡿⠟⣋⣤⣴⣾⣿⡇⠀⡼⠀⢀⠀⠉⢹⣿⣿⣯⢩⣭⡄⠞⢠⣿⡆⠇⢠⣬⡍⣙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿<br>⡿⠿⠋⣥⣶⣿⣿⣿⣿⣿⠿⠃⣤⠀⠀⣸⣿⣦⠀⠠⣤⣉⢀⡉⠁⢰⡆⢿⢿⡆⢸⣿⣇⣿⢰⣶⣶⣬⣍⡙⠛⠿⠿⢿⣿<br></div>",
+        "choices": [
+          {
+            "text": "End Simulation (Failure)",
+            "next": "End-Loss",
+            "penalty": 0
+          }
+        ]
+      },
+      {
+        "id": "End-Win",
+        "text": "<p>SUCCESS: You have successfully navigated the incident response process. Your swift and targeted actions saved the company from a major breach. You minimized disruption and secured forensic data for future defenses.</p><div class=\"ascii-art\"><br>__  __ _       _       _       <br>\\\\ \\/ /(_) __ _| | __ _| |_ ___ <br> \\\\  / | |/ _` | |/ _` | __/ _ \\<br>  /  \\\\ | | (_| | | (_| | ||  __\\<br> /_/\\\\_\\\\| |\\__,_|_|\\__,_|\\__\\___|<br>       |_|<br></div>",
+        "choices": []
+      },
+      {
+        "id": "End-Loss",
+        "text": "<p>FAILURE: Your misstep led to a critical failure or a full-scale breach. Sensitive data has been compromised or significant loss occurred. The cleanup will be costly, and the company's reputation is at risk.</p><div class=\"ascii-art\"><br> _       _    _   _   _ <br>| |     | |  | | | | | |<br>| |     | |  | | | | | |<br>| |     | |  | | | | | |<br>| |____ | |__| | | |_| |<br>|______| \\\\____/   \\\\___/ <br></div>",
+        "choices": []
+      }
+    ]
+  },
+ {
+  "scenarioId": "BLUEROCK_RANSOMWARE",
+  "scenarioTitle": "BlueRock Manufacturing Ransomware",
+  "startPassageId": "Start-Ransomware-Scenario",
+  "passages": [
+    {
+      "id": "Start-Ransomware-Scenario",
+      "text": "<p>It is a normal Tuesday morning at BlueRock Manufacturing when employees begin reporting that they cannot open any files on the shared drives.</p><p>Every document now ends with <span style=\"color:red\">.locked</span>. A ransom note appears on multiple screens demanding 50 Bitcoin within 72 hours.</p><p>Email is sluggish, tickets flood the helpdesk, and one of the domain controllers unexpectedly goes offline.</p><p>Production on the factory floor stops completely.</p><p>The Incident Response (IR) team is activated. Their decisions will determine how bad this gets.</p>",
+      "choices": [
+        {
+          "text": "Escalate quickly and declare a security incident",
+          "next": "Declare-security-incident",
+          "penalty": 0
+        },
+        {
+          "text": "Start isolating obviously affected systems, but keep it informal",
+          "next": "Start-isolating-informally",
+          "penalty": 7,
+          "mistake": "Delaying formal declaration slows down communication and resource allocation."
+        },
+        {
+          "text": "Assume it might be a storage glitch and reboot a few servers",
+          "next": "Assume-storage-glitch-reboot",
+          "penalty": 15,
+          "mistake": "Rebooting without investigation destroys volatile memory evidence (RAM) and can trigger malware persistence mechanisms."
+        }
+      ]
+    },
+    {
+      "id": "Declare-security-incident",
+      "text": "<p>The IR team immediately recognizes this as a likely ransomware incident.</p><p>They formally declare a security incident, notify leadership, and pause non-essential IT changes to avoid making the situation worse.</p><p>They now need to understand what is happening in more detail. What do they focus on?</p>",
+      "choices": [
+        {
+          "text": "Review SIEM and EDR alerts to confirm scope",
+          "next": "Review-SIEM-and-EDR",
+          "penalty": 0
+        },
+        {
+          "text": "Handle the situation only within IT for now, delaying leadership involvement",
+          "next": "Start-isolating-informally",
+          "penalty": 10,
+          "mistake": "Keeping leadership in the dark prevents strategic decision-making and legal preparation."
+        },
+        {
+          "text": "Treat it as a possible glitch and allow some staff to reboot systems",
+          "next": "Assume-storage-glitch-reboot",
+          "penalty": 15,
+          "mistake": "Rebooting destroys forensic evidence."
+        }
+      ]
+    },
+    {
+      "id": "Review-SIEM-and-EDR",
+      "text": "<p>The team dives into SIEM and EDR alerts.</p><p>They identify suspicious activity, rapid file changes, and a likely patient-zero workstation.</p><p>They see evidence of lateral movement to file servers and a domain controller.</p><p>They must now contain the attack carefully. What is their containment strategy?</p>",
+      "choices": [
+        {
+          "text": "Isolate compromised hosts at the network level, but keep them powered on",
+          "next": "Isolate-hosts-network-level",
+          "penalty": 0
+        },
+        {
+          "text": "Pull cables on the most critical systems but leave some “low priority” machines online",
+          "next": "Pull-cables-partial-isolation",
+          "penalty": 7,
+          "mistake": "Leaving 'low priority' machines online allows the attacker to maintain persistence and pivot back."
+        },
+        {
+          "text": "Reboot an infected domain controller to see if it comes back clean",
+          "next": "Reboot-infected-DC",
+          "penalty": 20,
+          "mistake": "Rebooting a DC during an active attack destroys critical logs and evidence."
+        }
+      ]
+    },
+    {
+      "id": "Isolate-hosts-network-level",
+      "text": "<p>The IR team begins preserving forensic evidence.</p><p>They create disk images, capture memory, and export key logs from the patient-zero workstation, compromised file servers, and the affected domain controller.</p><p>Evidence is stored securely with hashes recorded.</p><p>They now need to coordinate broader response. What do they do next?</p>",
+      "choices": [
+        {
+          "text": "Activate the formal ransomware IR playbook and assign clear roles",
+          "next": "Activate-formal-playbook",
+          "penalty": 0
+        },
+        {
+          "text": "Skip memory capture to save time and focus only on log exports",
+          "next": "Skip-memory-capture",
+          "penalty": 5,
+          "mistake": "Memory often contains encryption keys or attacker tools not found in logs."
+        },
+        {
+          "text": "Wipe one of the encrypted file servers immediately to rebuild it faster",
+          "next": "Wipe-server-immediately",
+          "penalty": 20,
+          "mistake": "Wiping systems destroys evidence needed for root cause analysis and insurance claims."
+        }
+      ]
+    },
+    {
+      "id": "Activate-formal-playbook",
+      "text": "<p>The team activates the ransomware IR playbook.</p><p>Roles are clearly assigned: IR lead, IT operations, communications, legal/compliance, and executive liaison. Law enforcement and cyber insurance are notified.</p><p>A central incident log is created to track all actions.</p><p>They must now decide how they will restore business operations. What do they prioritize?</p>",
+      "choices": [
+        {
+          "text": "Verify offline backups and plan for full rebuild and restore",
+          "next": "Verify-offline-backups",
+          "penalty": 0
+        },
+        {
+          "text": "Rely heavily on attackers’ promises while only lightly checking backups",
+          "next": "Check-backups-rely-on-ransom",
+          "penalty": 13,
+          "mistake": "Trusting criminals over your own backups is a high-risk strategy."
+        },
+        {
+          "text": "Allow leadership to handle ransom negotiations with minimal IR input",
+          "next": "Leadership-handles-negotiation",
+          "penalty": 25,
+          "mistake": "Negotiations without technical input can lead to paying for keys that don't work."
+        }
+      ]
+    },
+    {
+      "id": "Verify-offline-backups",
+      "text": "<p>The IR team confirms that the organization has recent, clean, offline backups for critical systems.</p><p>They prepare to rebuild key servers from trusted images and restore data rather than paying the ransom.</p><p>They now present the options to leadership. Leadership decides to:</p>",
+      "choices": [
+        {
+          "text": "Refuse the ransom and proceed with a controlled rebuild and restore",
+          "next": "Pre-Report-Win"
+        },
+        {
+          "text": "Consider a parallel negotiation “just in case” while still planning backups-first recovery",
+          "next": "Check-backups-rely-on-ransom",
+          "penalty": 5,
+          "mistake": "Engaging in negotiation can sometimes be a valid stall tactic, but carries risks."
+        }
+      ]
+    },
+    {
+      "id": "Start-isolating-informally",
+      "text": "<p>The team recognizes that something serious is happening and starts isolating obviously affected systems, but there is no formal incident declaration yet.</p><p>Communication to leadership is limited, and some staff continue their normal work.</p><p>This slows the attack somewhat, but leaves gaps. What do they do next?</p>",
+      "choices": [
+        {
+          "text": "Formalize the incident, notify leadership, and tighten coordination",
+          "next": "Declare-security-incident",
+          "penalty": -5
+        },
+        {
+          "text": "Continue ad-hoc isolation and focus on “getting people back to work”",
+          "next": "Pull-cables-partial-isolation",
+          "penalty": 7,
+          "mistake": "Prioritizing uptime over containment during active ransomware allows the spread to continue."
+        },
+        {
+          "text": "Assume older servers are not important and ignore them",
+          "next": "Reboot-infected-DC",
+          "penalty": 20,
+          "mistake": "Attackers often use older, unpatched servers as staging grounds."
+        }
+      ]
+    },
+    {
+      "id": "Pull-cables-partial-isolation",
+      "text": "<p>Several key systems are isolated, and some file shares are taken offline.</p><p>However, a few less-visible servers and endpoints remain online and continue encrypting files for a while.</p><p>Impact grows, but not as badly as it could have.</p><p>The IR team needs better visibility and evidence. What is their next move?</p>",
+      "choices": [
+        {
+          "text": "Begin structured log collection and imaging of key systems",
+          "next": "Isolate-hosts-network-level",
+          "penalty": -5
+        },
+        {
+          "text": "Focus mainly on restoring user access without deeper evidence collection",
+          "next": "Skip-memory-capture",
+          "penalty": 8,
+          "mistake": "Restoring access on compromised networks risks reinfection."
+        },
+        {
+          "text": "Delete suspicious tools and files manually without preserving artifacts",
+          "next": "Wipe-server-immediately",
+          "penalty": 15,
+          "mistake": "Deleting artifacts blindly destroys intelligence needed to block the attacker."
+        }
+      ]
+    },
+    {
+      "id": "Skip-memory-capture",
+      "text": "<p>The team collects some critical logs and partial disk images, but their effort is uneven.</p><p>They have enough to see that ransomware spread from one user’s credentials and moved laterally, but some details are still missing.</p><p>Leadership wants to know recovery options. What do they do?</p>",
+      "choices": [
+        {
+          "text": "Engage cyber insurance and/or an external IR partner to strengthen response",
+          "next": "Activate-formal-playbook",
+          "penalty": 0
+        },
+        {
+          "text": "Keep the response internal and begin limited backup checks",
+          "next": "Check-backups-rely-on-ransom",
+          "penalty": 6,
+          "mistake": "Insular responses often miss subtle persistence mechanisms."
+        },
+        {
+          "text": "Allow operations pressure to override containment and push for immediate restoration",
+          "next": "Leadership-handles-negotiation",
+          "penalty": 20,
+          "mistake": "Rushing restoration before full containment usually leads to reinfection."
+        }
+      ]
+    },
+    {
+      "id": "Check-backups-rely-on-ransom",
+      "text": "<p>The organization confirms that backups exist for many systems, though some are outdated or incomplete.</p><p>Leadership is under pressure to reduce downtime and is weighing paying some ransom against relying entirely on backups.</p><p>What direction do they choose?</p>",
+      "choices": [
+        {
+          "text": "Use backups as the primary recovery path and treat ransom only as last resort",
+          "next": "Verify-offline-backups",
+          "penalty": 0
+        },
+        {
+          "text": "Negotiate a reduced ransom while also planning partial recovery from backups",
+          "next": "Negotiate-reduced-ransom",
+          "penalty": 10,
+          "mistake": "Paying ransom funds criminal activity and does not guarantee data return."
+        },
+        {
+          "text": "Quickly agree to the attackers’ terms to speed up restoration",
+          "next": "Pre-Report-Loss",
+          "penalty": 65,
+          "mistake": "Panic-paying the ransom is the worst possible outcome."
+        }
+      ]
+    },
+    {
+      "id": "Negotiate-reduced-ransom",
+      "text": "<p>Leadership negotiates a reduced ransom while simultaneously preparing to recover from backups.</p><p>A decryptor is eventually obtained and works on many, but not all, systems.</p><p>Some data is lost and a few servers still require full rebuilds.</p><p>Legal and compliance teams coordinate notifications and communication.</p><p>The company’s reputation is impacted but survives.</p><p>Outcome: Recovery is mixed, with higher cost and some reputational damage, but the organization remains operational.</p>",
+      "choices": [
+        {
+          "text": "End Simulation (Mixed Result)",
+          "next": "Pre-Report-Win"
+        }
+      ]
+    },
+    {
+      "id": "Assume-storage-glitch-reboot",
+      "text": "<p>Several IT staff assume the issue may be a storage or patching problem.</p><p>They begin rebooting servers and endpoints in an attempt to “clear things up.”</p><p>In doing so, they wipe important logs and memory artifacts and restart ransomware processes, leading to even more encryption.</p><p>Containment is not yet in place. What happens next?</p>",
+      "choices": [
+        {
+          "text": "Realize the mistake, declare a formal incident, and stop reboots",
+          "next": "Start-isolating-informally",
+          "penalty": 0
+        },
+        {
+          "text": "Continue rebooting and manually killing processes without a clear plan",
+          "next": "Reboot-infected-DC",
+          "penalty": 15,
+          "mistake": "Flailing without a plan spreads the infection further."
+        },
+        {
+          "text": "Attempt rollbacks and snapshots without understanding the full scope",
+          "next": "Reboot-infected-DC",
+          "penalty": 15,
+          "mistake": "Rolling back snapshots without fixing the vulnerability just restores the system to a state where it can be hacked again."
+        }
+      ]
+    },
+    {
+      "id": "Reboot-infected-DC",
+      "text": "<p>Reboots and uncoordinated actions have allowed the ransomware to spread further.</p><p>Some file shares are still online, and encryption continues in the background.</p><p>Communication is fragmented and no single person is clearly in charge.</p><p>The team must decide how to proceed. What do they do?</p>",
+      "choices": [
+        {
+          "text": "Finally begin isolating systems properly and disabling shared drives",
+          "next": "Pull-cables-partial-isolation",
+          "penalty": -5
+        },
+        {
+          "text": "Focus mainly on the ransom note timer and ignore deeper investigation",
+          "next": "Wipe-server-immediately",
+          "penalty": 20,
+          "mistake": "Panic focusing on the timer leads to bad decision making."
+        },
+        {
+          "text": "Dismiss IR team recommendations and rely solely on a few overworked admins",
+          "next": "Wipe-server-immediately",
+          "penalty": 20,
+          "mistake": "Ignoring the experts is a fatal leadership error."
+        }
+      ]
+    },
+    {
+      "id": "Wipe-server-immediately",
+      "text": "<p>Little forensic evidence remains, and much of the environment is compromised.</p><p>The focus shifts almost entirely to the ransom note. There is still time to make better decisions, but options are narrowing.</p><p>What does leadership decide?</p>",
+      "choices": [
+        {
+          "text": "Call cyber insurance and bring in an external IR partner to help control the damage",
+          "next": "Skip-memory-capture",
+          "penalty": 0
+        },
+        {
+          "text": "Skip evidence collection entirely and focus only on getting decryption keys",
+          "next": "Leadership-handles-negotiation",
+          "penalty": 20,
+          "mistake": "Focusing solely on decryption ignores the risk of data exfiltration and future attacks."
+        },
+        {
+          "text": "Download “free decryptor” tools from the internet and test them directly on production systems",
+          "next": "Leadership-handles-negotiation",
+          "penalty": 30,
+          "mistake": "Using unverified tools on production systems can corrupt data permanently."
+        }
+      ]
+    },
+    {
+      "id": "Leadership-handles-negotiation",
+      "text": "<p>External help has not been fully utilized or is brought in too late.</p><p>Leadership is now primarily focused on getting systems back online as quickly as possible, regardless of long-term risk.</p><p>How do they proceed?</p>",
+      "choices": [
+        {
+          "text": "Involve legal and compliance before making any payment decisions",
+          "next": "Check-backups-rely-on-ransom",
+          "penalty": 0
+        },
+        {
+          "text": "Pay the full ransom quickly with minimal oversight",
+          "next": "Pre-Report-Loss",
+          "penalty": 65,
+          "mistake": "Paying without oversight is a complete failure of governance."
+        },
+        {
+          "text": "Make a partial payment and attempt to hide the situation from law enforcement",
+          "next": "Pre-Report-Loss",
+          "penalty": 65,
+          "mistake": "Covering up a breach is illegal in many jurisdictions and worsens the outcome."
+        }
+      ]
+    },
+    {
+      "id": "Pre-Report-Win",
+      "text": "<p>The company refuses to pay the ransom.</p><p>Critical systems are rebuilt from clean images and data is restored from verified backups.</p><p>All privileged credentials are rotated, and the environment is hardened with improved monitoring, segmentation, and response procedures.</p><p>A thorough post-incident review is performed, and lessons learned are shared across the organization.</p>",
+      "choices": [
+        {
+          "text": "Generate Final Report",
+          "next": "End-Win"
+        }
+      ]
+    },
+    {
+      "id": "Pre-Report-Loss",
+      "text": "<p>The organization pays the attackers, either fully or in part, without strong legal or strategic guidance. The decryptor provided only partially works; some systems remain corrupted or fail during the decryption process.</p><p>Later, the attackers reveal they exfiltrated sensitive data and demand a second payment to avoid public release.</p><p>Regulators, customers, and partners lose trust, and the company faces long-term legal and reputational damage.</p>",
+      "choices": [
+        {
+          "text": "Generate Final Report",
+          "next": "End-Loss"
+        }
+      ]
+    },
+    {
+      "id": "End-Win",
+      "text": "<p>SUCCESS: You have successfully navigated the incident response process. Your swift and targeted actions saved the company from a major breach. You minimized disruption and secured forensic data for future defenses.</p>",
+      "choices": []
+    },
+    {
+      "id": "End-Loss",
+      "text": "<p>FAILURE: Your misstep led to a critical failure or a full-scale breach. Sensitive data has been compromised or significant loss occurred. The cleanup will be costly, and the company's reputation is at risk.</p>",
+      "choices": []
+    }
+  ]
+}
+]

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat_Quest: Cyber Incident Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+<style>
+    /* ======================================================
+       IBM 5151 STYLE — GREEN PHOSPHOR CRT THEME
+       ====================================================== */
+
+    @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+    body {
+        font-family: 'VT323', monospace;
+        background-color: #000;
+        color: #00ff55;  /* Classic IBM phosphor green */
+        font-size: 1.25rem;
+        line-height: 1.5;
+        position: relative;
+        overflow-x: hidden;
+
+        /* softer, bloom-style CRT glow */
+        text-shadow:
+            0 0 1px #00ff55,
+            0 0 3px #00dd44,
+            0 0 6px rgba(0,255,120,0.45);
+    }
+
+    .container-box { max-width: none; }
+
+    .terminal-header {
+        text-align: center;
+        margin-bottom: 1rem;
+        color: #00ff55;
+        text-shadow:
+            0 0 2px #00ff55,
+            0 0 6px rgba(0,255,120,0.5);
+    }
+
+    .text-glow {
+        color: #00ff55;
+        text-shadow:
+            0 0 2px #00ff55,
+            0 0 5px rgba(0,255,120,0.6);
+    }
+
+    /* ==========================================
+       IBM GREEN CRT BUTTONS – STRONGER TERMINAL LOOK
+       ========================================== */
+    .terminal-button {
+        background-color: rgba(0, 40, 0, 0.95);  /* dark terminal green panel */
+        border: none;                            /* no visible outline */
+        color: #00ff55;                          /* bright IBM green text */
+        border-radius: 0;
+        padding: 0.6rem 1.4rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+
+        /* CRT glow around the label */
+        text-shadow:
+            0 0 2px #00ff55,
+            0 0 4px rgba(0,255,120,0.6);
+
+        transition: all 0.12s ease-in-out;
+    }
+
+    .terminal-button:hover {
+        background-color: #00ff55;               /* full bright phosphor on hover */
+        color: #001400;                          /* very dark green text (like inverted) */
+        text-shadow: none;                       /* keep hover text sharp */
+        box-shadow:
+            0 0 4px #00ff55,
+            0 0 10px #00ff55;                    /* glow bloom */
+    }
+
+    .card-box {
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        padding: 1rem 0;
+    }
+
+    .final-score {
+        color: #00ff55;
+        text-shadow: 0 0 6px #00ff55;
+    }
+
+    #story-content.menu-mode {
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* IBM ASCII / preformatted text */
+    pre {
+        font-family: 'VT323', monospace;
+        color: #00ff55;
+        text-shadow:
+            0 0 1px #00ff55,
+            0 0 3px rgba(0,255,120,0.4);
+        line-height: 1.1;
+        font-size: 1rem;
+        white-space: pre;
+    }
+
+    #story-text {
+        text-align: left;
+    }
+
+    /* ======================================================
+       CRT-OPTIMIZED FEEDBACK COLORS
+       ====================================================== */
+
+    /* Success green */
+    /* Success green (unchanged, here for context) */
+.crt-green {
+    color: #00ff88;
+    text-shadow:
+        0 0 2px #00ff88,
+        0 0 4px rgba(0,255,150,0.35);
+}
+
+/* Darker amber for mixed / warning states */
+.crt-amber {
+    color: #d8a040; /* deeper amber */
+    text-shadow:
+        0 0 1px #d8a040,
+        0 0 2px rgba(200,130,40,0.4);
+}
+
+/* Darker red-orange for critical failure */
+.crt-danger {
+    color: #d85030; /* deeper red-orange */
+    text-shadow:
+        0 0 1px #d85030,
+        0 0 2px rgba(200,80,40,0.45);
+    }
+
+    /* ======================================================
+       CRT SCANLINES
+       ====================================================== */
+    body::after {
+        content: "";
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+
+        /* IBM-style dense scanlines */
+        background: repeating-linear-gradient(
+            to bottom,
+            rgba(0, 255, 80, 0.06) 0px,
+            rgba(0, 255, 80, 0.06) 1px,
+            rgba(0, 0, 0, 0.2) 2px,
+            rgba(0, 0, 0, 0.2) 3px
+        );
+        mix-blend-mode: screen; 
+        opacity: 0.35;
+        z-index: 9999;
+    }
+
+    /* ======================================================
+       CRT VIGNETTE / TUBE BEND
+       ====================================================== */
+    body::before {
+        content: "";
+        pointer-events: none;
+        position: fixed;
+        inset: -30px;
+
+        /* subtle CRT tube bend & shadow */
+        background:
+            radial-gradient(
+                circle at 50% 50%,
+                rgba(0,255,120,0.08) 0%,
+                rgba(0,255,120,0.03) 40%,
+                rgba(0,255,120,0.02) 60%,
+                rgba(0, 0, 0, 0.6) 100%
+            );
+        opacity: 0.8;
+        z-index: 9998;
+    }
+
+    #game-container {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+
+</head>
+<body class="flex justify-center min-h-screen p-8">
+    <div id="game-container" class="w-full container-box">
+        <h1 class="font-['VT323'] text-4xl mb-4 terminal-header text-center">Threat_Quest: Loading Scenarios...</h1>
+        
+        <div id="story-content" class="hidden" style="display: none;"> 
+            <div id="story-text" class="text-lg leading-relaxed mb-8 min-h-[100px] text-glow flex justify-center">
+                <div id="centered-passage" class="w-full max-w-2xl text-left">
+                </div>
+            </div>
+            <div id="choices-container" class="flex flex-col space-y-4 items-center"></div>
+        </div>
+
+        <div id="game-over-container" class="hidden" style="display: none;">
+            <div id="results-card" class="card-box p-6 mb-6">
+                <h2 class="text-2xl font-bold mb-2 text-glow text-center">Simulation Complete</h2>
+                <p class="text-xl font-mono text-center">Final Score: <span id="final-score" class="final-score font-bold"></span></p>
+            </div>
+            <div id="feedback-card" class="card-box p-6 mb-6"></div>
+            
+            <div id="game-end-menu" class="flex flex-col space-y-4 items-center pt-4"></div>
+        </div>
+
+    </div>
+
+    <script>
+        
+        // --- GLOBAL GAME STATE VARIABLES ---
+        let currentSceneKey; 
+        let score; 
+        let mistakes;
+        let scenarioLibrary = {}; // Stores ALL scenarios keyed by ID
+        let scenarioData = null; // Stores the CURRENT active scenario object
+        
+        // NEW GLOBAL CONSTANT FOR SCORING FALLBACK
+        const PASSING_SCORE_THRESHOLD = 75; 
+
+        // --- DOM Elements ---
+        const titleEl = document.querySelector('h1');
+        const storyContentEl = document.getElementById('story-content');
+        const storyTextEl = document.getElementById('story-text');
+        const centeredPassageEl = document.getElementById('centered-passage'); // The inner element for text content
+        const choicesContainerEl = document.getElementById('choices-container');
+        const gameOverContainerEl = document.getElementById('game-over-container');
+        const finalScoreEl = document.getElementById('final-score');
+        const feedbackCardEl = document.getElementById('feedback-card');
+        const gameEndMenuEl = document.getElementById('game-end-menu');
+
+        const HISTORY_KEY = 'threatQuestHistory';
+
+        // Helper to retrieve the current passage from the ACTIVE scenario
+        const getPassage = (key) => scenarioData.passages[key];
+
+
+        // --- SCENARIO LOADING: FETCHES AND PARSES ALL DATA ---
+        async function loadScenario() {
+            try {
+                // We add a cache-busting query string to the fetch
+                const response = await fetch('scenarios_config.json?v=' + new Date().getTime());
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const configArray = await response.json();
+
+                // Convert the array into a scenario library object, keyed by scenarioId
+                scenarioLibrary = {};
+                configArray.forEach(scenario => {
+                    // Convert the passages array into a lookup map (Passage ID -> Passage Object)
+                    const passagesMap = {};
+                    scenario.passages.forEach(passage => {
+                        passagesMap[passage.id] = passage;
+                    });
+                    
+                    scenario.passages = passagesMap;
+                    scenarioLibrary[scenario.scenarioId] = scenario;
+                });
+
+                showScenarioSelector(); // Display the list of available scenarios
+
+            } catch (e) {
+                console.error("Failed to load scenario configuration:", e);
+                titleEl.textContent = "Error: File Missing";
+                centeredPassageEl.innerHTML = `<p class="crt-danger text-center">ERROR: Could not load scenarios_config.json. Ensure the file exists and is correctly formatted.</p>`;
+                storyContentEl.style.display = 'flex';
+                storyContentEl.classList.add('menu-mode');
+                choicesContainerEl.style.display = 'none';
+            }
+        }
+        
+        // --- SCENARIO SELECTOR MENU ---
+        function showScenarioSelector() {
+            resetContainers();
+
+            storyContentEl.classList.add('menu-mode');
+            storyContentEl.classList.remove('hidden');
+            storyContentEl.style.display = 'flex';
+
+            titleEl.textContent = "Threat_Quest: Select Scenario";
+            centeredPassageEl.innerHTML = "Welcome! Select the cybersecurity incident you want to simulate.";
+            centeredPassageEl.classList.add('text-center'); 
+            centeredPassageEl.classList.remove('text-left'); 
+
+            choicesContainerEl.innerHTML = '';
+            choicesContainerEl.classList.remove('hidden');
+            choicesContainerEl.classList.add('space-y-4');
+
+            // 1. Create buttons for each scenario in the library
+            Object.values(scenarioLibrary).forEach((scenario, index) => {
+                const button = document.createElement('button');
+                button.textContent = `${index + 1}. ${scenario.scenarioTitle}`;
+                button.className = "terminal-button font-bold py-3 px-6 w-full";
+                
+                button.addEventListener('click', () => {
+                    startSelectedScenario(scenario.scenarioId);
+                });
+                choicesContainerEl.appendChild(button);
+            });
+            
+            // 2. Add history button
+            const historyLength = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]').length;
+            const historyBtn = document.createElement('button');
+            historyBtn.textContent = `View Past Attempts (${historyLength})`;
+            historyBtn.className = historyLength > 0 
+                ? "terminal-button font-bold py-3 px-6 w-full mt-4"
+                : "terminal-button font-bold py-3 px-6 w-full mt-4 opacity-50 cursor-not-allowed pointer-events-none";
+            
+            if (historyLength > 0) {
+                historyBtn.addEventListener('click', showHistoryMenu);
+            }
+            choicesContainerEl.appendChild(historyBtn);
+        }
+
+        // --- CORE GAME FLOW FUNCTIONS ---
+
+        const startSelectedScenario = (scenarioId) => {
+            // Set the global variable to the chosen scenario object
+            scenarioData = scenarioLibrary[scenarioId]; 
+            
+            // --- START AT 100 ---
+            score = 100; 
+            
+            mistakes = [];
+            currentSceneKey = scenarioData.startPassageId;
+            
+            // Clear any old 'continue' save data before starting a new run
+            localStorage.removeItem('threatQuestSave'); 
+            renderScene();
+        }
+
+        const renderScene = () => {
+            if (!scenarioData) return;
+            
+            storyContentEl.classList.remove('menu-mode');
+            centeredPassageEl.classList.remove('text-center'); 
+            centeredPassageEl.classList.add('text-left'); // Ensure passage text is left-aligned in the centered block
+
+            resetContainers();
+            storyContentEl.classList.remove('hidden'); 
+            storyContentEl.style.display = 'block'; 
+
+            const currentScene = getPassage(currentSceneKey);
+            
+            if (!currentScene) {
+                console.error("Error: currentSceneKey is invalid or undefined:", currentSceneKey);
+                showScenarioSelector();
+                return;
+            }
+
+            // Set title: "Scenario Title: Current Passage ID"
+            titleEl.textContent = `${scenarioData.scenarioTitle}: ${currentScene.id.replace(/-/g, ' ')}`;
+            
+            // This just displays the HTML from the JSON file
+            centeredPassageEl.innerHTML = currentScene.text;
+
+            choicesContainerEl.innerHTML = '';
+            
+            if (currentScene.choices.length === 0) {
+                // GAME OVER STATE
+                handleGameOver(currentScene.id);
+                return;
+            } 
+            
+            // Create Choice Buttons
+            currentScene.choices.forEach((choice) => {
+                const button = document.createElement('button');
+                button.textContent = `${choice.text}`;
+                button.className = "terminal-button font-bold text-center py-1 px-2";
+                button.addEventListener('click', () => handleChoice(choice));
+                choicesContainerEl.appendChild(button);
+            });
+            
+            choicesContainerEl.classList.remove('hidden');
+            storyTextEl.classList.remove('hidden');
+
+            saveGame(); // Save state after every successful render
+        };
+
+        const handleChoice = (choice) => {
+            // Check if a penalty value exists at all
+            if (choice.penalty) {
+                score -= choice.penalty; // Apply the penalty or reward
+            }
+
+            // --- CLAMPING LOGIC (0 to 100) ---
+            // If score goes over 100, set it back to 100
+            if (score > 100) {
+                score = 100;
+            }
+            // If score goes below 0, set it back to 0
+            if (score < 0) {
+                score = 0;
+            }
+            // --- END OF CLAMPING LOGIC ---
+            
+            // Only add a "mistake" if the penalty is a positive number (a bad choice)
+            if (choice.penalty && choice.penalty > 0 && choice.mistake) {
+                mistakes.push(choice.mistake);
+            }
+
+            currentSceneKey = choice.next;
+            renderScene();
+        };
+
+        const handleGameOver = (endPassageId) => {
+            storyContentEl.classList.add('hidden');
+            storyContentEl.style.display = 'none'; 
+            
+            document.getElementById('results-card').style.display = 'block';
+            document.getElementById('feedback-card').style.display = 'block';
+
+            gameOverContainerEl.classList.remove('hidden');
+            gameOverContainerEl.style.display = 'block'; 
+            
+            // Determine the result based on the end passage ID or score
+            let endTitle;
+            const idLower = endPassageId.toLowerCase();
+
+            if (idLower.includes('win')) {
+                // Explicitly named 'win' passage overrides score
+                endTitle = 'Simulation Complete (Success)'; 
+            } else if (idLower.includes('loss')) {
+                // Explicitly named 'loss' passage overrides score
+                endTitle = 'Simulation Complete (Failure)';
+            } else {
+                // Fallback: If the ID is neutral (like 'End'), use the score to determine success.
+                // We use the new PASSING_SCORE_THRESHOLD
+                if (score >= PASSING_SCORE_THRESHOLD) {
+                    endTitle = 'Simulation Complete (Success - Acceptable Risk)';
+                } else {
+                    endTitle = 'Simulation Complete (Failure - Insufficient Response)';
+                }
+            }
+            
+            document.querySelector('#results-card h2').textContent = endTitle;
+            
+            // The score is clamped 0-100
+            finalScoreEl.textContent = `${score} / 100`; 
+
+            renderFeedback(); 
+            
+            // Finalize the run
+            saveGameToHistory(scenarioData.scenarioId); 
+            localStorage.removeItem('threatQuestSave'); // Clear save
+            
+            // Display end menu
+            const finalMsg = document.createElement('p');
+            finalMsg.textContent = "What would you like to do next?";
+            finalMsg.className = "text-xl text-center mb-4 pt-6 text-glow";
+            
+            gameEndMenuEl.innerHTML = '';
+            gameEndMenuEl.appendChild(finalMsg);
+
+            const menuButtonWrapper = document.createElement('div');
+            menuButtonWrapper.className = 'flex flex-col space-y-4 w-full max-w-sm';
+            gameEndMenuEl.appendChild(menuButtonWrapper);
+
+            // Back to main selector
+            const backBtn = document.createElement('button');
+            backBtn.textContent = 'Back to Scenario Selector';
+            backBtn.className = "terminal-button font-bold py-3 px-6 w-full";
+            backBtn.addEventListener('click', showScenarioSelector);
+            menuButtonWrapper.appendChild(backBtn);
+        };
+        
+        // --- SAVE/LOAD/HISTORY FUNCTIONS ---
+        
+        const saveGame = () => {
+            if (!scenarioData) return;
+            try {
+                const gameState = JSON.stringify({
+                    scenarioId: scenarioData.scenarioId, // Save the current scenario ID
+                    key: currentSceneKey,
+                    score: score, // Saves the clamped score
+                    mistakes: mistakes
+                });
+                localStorage.setItem('threatQuestSave', gameState);
+            } catch (e) {
+                console.error("Could not save game state:", e);
+            }
+        };
+
+        const loadGame = () => { 
+            try {
+                const savedData = localStorage.getItem('threatQuestSave');
+                if (savedData) {
+                    const gameState = JSON.parse(savedData);
+                    
+                    // Set the current scenario data based on the saved ID
+                    scenarioData = scenarioLibrary[gameState.scenarioId];
+                    if (!scenarioData) return false; // Saved scenario no longer exists
+                    
+                    currentSceneKey = gameState.key;
+                    score = gameState.score;
+                    mistakes = gameState.mistakes || [];
+                    return true;
+                }
+                return false;
+            } catch (e) {
+                console.error("Could not load game state:", e);
+                return false;
+            }
+        };
+
+        const saveGameToHistory = () => {
+            if (!scenarioData) return;
+            try {
+                const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+                
+                const result = {
+                    date: new Date().toLocaleString(),
+                    scenario: scenarioData.scenarioTitle, // Save the full title
+                    finalScore: score, // This will now save the clamped score
+                    outcome: currentSceneKey.toUpperCase().replace('-', ' '),
+                    mistakes: mistakes
+                };
+
+                history.push(result);
+                localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+            } catch (e) {
+                console.error("Could not save game history:", e);
+            }
+        };
+
+        const getHistory = () => {
+            try {
+                return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+            } catch (e) {
+                console.error("Could not load game history:", e);
+                return [];
+            }
+        };
+        
+        // --- UI UTILITY FUNCTIONS ---
+        
+        const resetContainers = () => {
+            const containers = [storyContentEl, gameOverContainerEl];
+            containers.forEach(el => {
+                el.classList.add('hidden');
+                el.style.display = 'none';
+            });
+        };
+        
+        const renderFeedback = () => {
+            feedbackCardEl.innerHTML = '';
+            
+            const currentPassageId = currentSceneKey.toLowerCase();
+            let isWin = currentPassageId.includes('win');
+
+            // Fallback: Use the score and threshold
+            if (!isWin && !currentPassageId.includes('loss')) {
+                isWin = score >= PASSING_SCORE_THRESHOLD; 
+            }
+
+            if (isWin) {
+                // Winning feedback (focus on how well they scored)
+                if (mistakes.length === 0) {
+                     feedbackCardEl.innerHTML = `<div class="text-center"><p class="crt-green font-bold">Excellent! You made no mistakes and followed the NIST framework perfectly.</p><p class="mt-2">Your actions led to a successful incident response and you saved the company from a major breach.</p></div>`;
+                } else {
+                    // Won, but with mistakes
+                    let listHtml = mistakes.map(m => `<li><strong>Mistake:</strong> ${m}</li>`).join('');
+                    feedbackCardEl.innerHTML = `<div class="text-center"><p class="crt-amber font-bold">Success, but with room for improvement.</p><p class="mt-2">You contained the incident, but you made mistakes that cost time and resources:</p><ul class="list-disc list-inside mt-4 text-left mx-auto max-w-sm space-y-2">${listHtml}</ul></div>`;
+                }
+            } else {
+                // Losing feedback (focus on failure reasons)
+                let listHtml = mistakes.map(m => `<li><strong>Mistake:</strong> ${m}</li>`).join('');
+                if (mistakes.length === 0) {
+                    // The player probably hit a fatal loss passage with no associated score penalty
+                    feedbackCardEl.innerHTML = `<div class="text-center"><p class="crt-danger font-bold">CRITICAL FAILURE.</p><p class="mt-2">Your final decision led to a catastrophic outcome, even though you made few other mistakes.</p></div>`;
+                } else {
+                    feedbackCardEl.innerHTML = `<div class="text-center"><p class="crt-danger font-bold">CRITICAL FAILURE.</p><p class="mt-2">The incident spiraled out of control due to these critical missteps:</p><ul class="list-disc list-inside mt-4 text-left mx-auto max-w-sm space-y-2">${listHtml}</ul></div>`;
+                }
+            }
+        };
+        
+        const showHistoryMenu = () => {
+            resetContainers();
+            gameOverContainerEl.classList.remove('hidden');
+            gameOverContainerEl.style.display = 'block'; 
+            
+            document.getElementById('results-card').style.display = 'none';
+            document.getElementById('feedback-card').style.display = 'none';
+            
+            gameEndMenuEl.innerHTML = '';
+            gameEndMenuEl.classList.remove('flex-col');
+            
+            titleEl.textContent = 'Threat_Quest: Past Attempts';
+
+            const history = getHistory();
+
+            const backBtn = document.createElement('button');
+            backBtn.textContent = '< Back to Scenario Selector';
+            backBtn.className = "terminal-button font-bold py-3 px-6";
+            backBtn.addEventListener('click', showScenarioSelector); 
+            gameEndMenuEl.appendChild(backBtn);
+            
+            const initialText = document.createElement('p');
+            initialText.className = "text-2xl mb-6 text-glow text-center pt-6";
+            initialText.textContent = `You have completed ${history.length} simulations.`;
+            gameEndMenuEl.appendChild(initialText);
+
+            const historyList = document.createElement('div');
+            historyList.className = 'w-full max-h-96 overflow-y-auto mt-4 p-4 border border-green-700';
+
+            if (history.length === 0) {
+                historyList.innerHTML = '<p class="text-center">No completed simulations found.</p>';
+            } else {
+                history.slice().reverse().forEach((attempt) => {
+                    const attemptDiv = document.createElement('div');
+                    
+                    // --- NEW COLOR LOGIC USING CRT CLASSES ---
+                    let colorClass = 'crt-danger'; // Default (0 score) – critical
+                    if (attempt.finalScore >= PASSING_SCORE_THRESHOLD) {
+                        colorClass = 'crt-green';  // Pass (75–100)
+                    } else if (attempt.finalScore > 0) { 
+                        colorClass = 'crt-amber'; // 1–74, partial / mixed
+                    }
+                    // --- END OF NEW LOGIC ---
+
+                    attemptDiv.className = 'p-3 mb-2 border-b border-green-700 last:border-b-0';
+                    attemptDiv.innerHTML = `
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold ${colorClass}">${attempt.scenario} (${attempt.outcome})</span>
+                            <span class="text-sm">${attempt.date}</span>
+                        </div>
+                        <p class="mb-1">Score: <span class="${colorClass}">${attempt.finalScore}</span></p> 
+                        <p>Mistakes: ${attempt.mistakes.length > 0 ? attempt.mistakes.join('; ') : 'None'}</p>
+                    `;
+                    historyList.appendChild(attemptDiv);
+                });
+            }
+
+            gameEndMenuEl.appendChild(historyList);
+        };
+
+        // --- INITIALIZATION ---
+        window.onload = loadScenario;
+    </script>
+</body>
+</html>
