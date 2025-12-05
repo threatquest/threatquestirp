@@ -1,4 +1,3 @@
-
 [
   {
     "scenarioId": "OVERDRAFT_EMPORIUM_PHISHING",
@@ -427,12 +426,12 @@
       },
       {
         "id": "End-Win",
-        "text": "<p>SUCCESS: You have successfully navigated the incident response process. Your swift and targeted actions saved the company from a major breach. You minimized disruption and secured forensic data for future defenses.</p><div class=\"ascii-art\"><br>__  __ _       _       _       <br>\\\\ \\/ /(_) __ _| | __ _| |_ ___ <br> \\\\  / | |/ _` | |/ _` | __/ _ \\<br>  /  \\\\ | | (_| | | (_| | ||  __\\<br> /_/\\\\_\\\\| |\\__,_|_|\\__,_|\\__\\___|<br>       |_|<br></div>",
+        "text": "<p>SUCCESS: You have successfully navigated the incident response process. Your swift and targeted actions saved the company from a major breach. You minimized disruption and secured forensic data for future defenses.</p><div class=\"ascii-art\"><br>__  __ _       _       _       <br>\\\\ \\/ /(_) __ _| | __ _| |_ ___ <br> \\\\  / | |/ _` | |/ _` | __/ _ \\<br>  /  \\\\ | | (_| | | (_| | ||  __\\<br> /_/\\\\_\\\\| |\\__,_|_|\\__,_|\\__\\___|<br>       |_|<br></div>",
         "choices": []
       },
       {
         "id": "End-Loss",
-        "text": "<p>FAILURE: Your misstep led to a critical failure or a full-scale breach. Sensitive data has been compromised or significant loss occurred. The cleanup will be costly, and the company's reputation is at risk.</p><div class=\"ascii-art\"><br> _       _    _   _   _ <br>| |     | |  | | | | | |<br>| |     | |  | | | | | |<br>| |     | |  | | | | | |<br>| |____ | |__| | | |_| |<br>|______| \\\\____/   \\\\___/ <br></div>",
+        "text": "<p>FAILURE: Your misstep led to a critical failure or a full-scale breach. Sensitive data has been compromised or significant loss occurred. The cleanup will be costly, and the company's reputation is at risk.</p><div class=\"ascii-art\"><br> _       _    _   _   _ <br>| |     | |  | | | | | |<br>| |     | |  | | | | | |<br>| |     | |  | | | | | |<br>| |____ | |__| | | |_| |<br>|______| \\\\____/   \\\\___/ <br></div>",
         "choices": []
       }
     ]
@@ -1394,10 +1393,16 @@
         ]
       },
       {
-        "id": "Assume-that-they-are-doing-the-data-migration-early",
-        "text": "Despite the indication from your manager that the migration shouldn't be happening for a couple more months, you decide to assume the migration is happening early.\n\nThis assumption proves to be detrimental as the threat is able to double their extraction and continue to grab as much data as possible. Eventually through the detection from another security team member they were able to escalate and remove the threat. It later comes out that you had previously known about this but assumed that it was just a planned event occuring early.\n\nThis assumption led you to require more training and further your knowledge on incident response as your response was deemed unacceptable.",
-        "choices": []
-      },
+  "id": "Assume-that-they-are-doing-the-data-migration-early",
+  "text": "Despite the indication from your manager that the migration shouldn't be happening for a couple more months, you decide to assume the migration is happening early.\n\nThis assumption proves to be detrimental as the threat is able to double their extraction and continue to grab as much data as possible. Eventually through the detection from another security team member they were able to escalate and remove the threat. It later comes out that you had previously known about this but assumed that it was just a planned event occuring early.\n\nThis assumption led you to require more training and further your knowledge on incident response as your response was deemed unacceptable.",
+  "choices": [
+    {
+      "text": "End Simulation (Failure)",
+      "next": "End-Loss",
+      "penalty": 0
+    }
+  ]
+},
       {
         "id": "Shutdown-company-traffic-to-contain-information-spread-and-transferring",
         "text": "<p>You decide that the best option to limit anymore file transfers is to fully shutdown the company and all of it's traffic.</p><p>While in theory this may be a good idea to remove all further attempts at gathering data, business operations came at a complete halt causing mass panic within the company.</p><p>Once it came to light that it was your decision your higher-ups scolded you immediately as that was not an option and for your failure of not coming to them before deciding this.</p><p>Despite your good intentions, your actions were too extreme for the scenario and led to business operations being halted all across the board.</p><p>You were placed on leave temporarily for consideration of your future at the company.</p><p>The company decided to place a higher manager on the situation to determine what was the best course of action.</p>",
@@ -1521,12 +1526,12 @@
       },
       {
         "id": "End-Win",
-        "text": "<p>SUCCESS: You have successfully navigated the incident response process. Your swift and targeted actions saved the company from a major breach. You minimized disruption and secured forensic data for future defenses.</p><div class=\"ascii-art\"><br>__  __ _       _       _       <br>\\\\ \\/ /(_) __ _| | __ _| |_ ___ <br> \\\\  / | |/ _` | |/ _` | __/ _ \\<br>  /  \\\\ | | (_| | | (_| | ||  __\\<br> /_/\\\\_\\\\| |\\__,_|_|\\__,_|\\__\\___|<br>       |_|<br></div>",
+        "text": "<p>SUCCESS: You have successfully navigated the incident response process. Your swift and targeted actions saved the company from a major breach. You minimized disruption and secured forensic data for future defenses.</p><div class=\"ascii-art\"><br>__  __ _       _       _       <br>\\\\ \\/ /(_) __ _| | __ _| |_ ___ <br> \\\\  / | |/ _` | |/ _` | __/ _ \\<br>  /  \\\\ | | (_| | | (_| | ||  __\\<br> /_/\\\\_\\\\| |\\__,_|_|\\__,_|\\__\\___|<br>       |_|<br></div>",
         "choices": []
       },
       {
         "id": "End-Loss",
-        "text": "<p>FAILURE: Your misstep led to a critical failure or a full-scale breach. Sensitive data has been compromised or significant loss occurred. The cleanup will be costly, and the company's reputation is at risk.</p><div class=\"ascii-art\"><br> _       _    _   _   _ <br>| |     | |  | | | | | |<br>| |     | |  | | | | | |<br>| |     | |  | | | | | |<br>| |____ | |__| | | |_| |<br>|______| \\\\____/   \\\\___/ <br></div>",
+        "text": "<p>FAILURE: Your misstep led to a critical failure or a full-scale breach. Sensitive data has been compromised or significant loss occurred. The cleanup will be costly, and the company's reputation is at risk.</p><div class=\"ascii-art\"><br> _       _    _   _   _ <br>| |     | |  | | | | | |<br>| |     | |  | | | | | |<br>| |     | |  | | | | | |<br>| |____ | |__| | | |_| |<br>|______| \\\\____/   \\\\___/ <br></div>",
         "choices": []
       }
     ]
@@ -1894,3 +1899,12 @@
   ]
 }
 ]
+
+
+
+
+
+
+
+
+
